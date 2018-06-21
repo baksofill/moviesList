@@ -1,2 +1,2 @@
-# movieList
-Basic app with using Marionnet.js
+# moviesList
+Basic app with using Marionnet.js 2
