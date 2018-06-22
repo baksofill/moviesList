@@ -1,22 +1,22 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 
-var ToDoModel = require('../models/todo');
+var MovieModel = require('../movies-model');
 
 
-var ToDo = Marionette.LayoutView.extend({
+var MovieItem = Marionette.LayoutView.extend({
     tagName: 'li',
     className: 'list-group-item',
-    template: require('../html/todoitem.jst')
+    template: require('./movieItem.jst')
 });
 
 
-var TodoList = Marionette.CompositeView.extend({
+var MovieList = Marionette.CompositeView.extend({
     el: '#app-hook',
     className: 'list-group',
-    template: require('../html/todolist.jst'),
+    template: require('./movieList.jst'),
 
-    childView: ToDo,
+    childView: MovieItem,
     childViewContainer: 'ul',
 
     ui: {
@@ -55,5 +55,4 @@ var TodoList = Marionette.CompositeView.extend({
     }
 });
 
-
-module.exports = TodoList;
+module.exports = MovieList;

@@ -1,6 +1,6 @@
 var Marionette = require('backbone.marionette');
-var TodoView = require('./views/layout');
-var ToDoModel = require('./models/todo');
+var MovieView = require('./layoutPage/layout');
+var MovieModel = require('./movies-model');
 
 
 var initialData = [
@@ -10,12 +10,12 @@ var initialData = [
 
 var app = new Marionette.Application({
     onStart: function(options) {
-        var todo = new TodoView({
+        var movie = new MovieView({
             collection: new Backbone.Collection(options.initialData),
-            model: new ToDoModel()
+            model: new MovieModel()
         });
-        todo.render();
-        todo.triggerMethod('show');
+        movie.render();
+        movie.triggerMethod('show');
     }
 });
 
