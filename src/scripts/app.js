@@ -1,6 +1,7 @@
 var Marionette = require('backbone.marionette');
 var MovieView = require('./layoutPage/layout');
 var MovieModel = require('./movies-model');
+var Router = require('./appRoutes');
 
 
 var initialData = [
@@ -10,12 +11,15 @@ var initialData = [
 
 var app = new Marionette.Application({
     onStart: function(options) {
-        var movie = new MovieView({
-            collection: new Backbone.Collection(options.initialData),
-            model: new MovieModel()
-        });
+        var router = new Router(options);
+        // var movie = new MovieView({
+        //     collection: new Backbone.Collection(options.initialData),
+        //     model: new MovieModel()
+        // });
         movie.render();
         movie.triggerMethod('show');
+
+        Backbone.history.start();
     }
 });
 
