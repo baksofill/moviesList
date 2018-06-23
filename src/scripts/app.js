@@ -16,8 +16,8 @@ var app = new Marionette.Application({
         //     collection: new Backbone.Collection(options.initialData),
         //     model: new MovieModel()
         // });
-        movie.render();
-        movie.triggerMethod('show');
+        // movie.render();
+        // movie.triggerMethod('show');
 
         Backbone.history.start();
     }
