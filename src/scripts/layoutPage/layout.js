@@ -1,57 +1,45 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
-
 var MovieModel = require('../movies-model');
 
 
-var MovieItem = Marionette.LayoutView.extend({
-    tagName: 'li',
-    className: 'list-group-item',
-    template: require('./movieItem.jst')
-});
+var FormView = require('../form/form');
+var ListView = require('../listOfMovies/list');
 
-
-var MovieList = Marionette.CompositeView.extend({
-    el: '#app-hook',
+var MovieList = Marionette.LayoutView.extend({
     className: 'list-group',
-    template: require('./movieList.jst'),
+    template: require('./layout.jst'),
 
-    childView: MovieItem,
-    childViewContainer: 'ul',
 
-    ui: {
-        author: '#id_author',
-        form: 'form',
-        movieName: '#id_movieName'
+    regions: {
+        form: '.form',
+        list: '.list'
     },
 
-    triggers: {
-        'submit @ui.form': 'add:todo:item'
+    // ui: {
+    //     author: '#id_author',
+    //     form: 'form',
+    //     movieName: '#id_movieName'
+    // },
+
+    onShow: function() {
+
     },
 
-    collectionEvents: {
-        add: 'itemAdded'
+    onShowMovieForm: function() {
+        var formView = new FormView({model: this.model});
+        this.showChildView('form', formView);
+
+        // Backbone.history.navigate('');
+
     },
 
-    modelEvents: {
-        change: 'render'
-    },
+    onShowMovieList: function() {
+        var listView = new ListView({collection: this.collection});
+        this.showChildView('list', listView);
 
-    onAddTodoItem: function() {
-        this.model.set({
-            author: this.ui.author.val(),
-            movieName: this.ui.movieName.val()
-        }, {validate: true});
+        // Backbone.history.navigate('list');
 
-        var items = this.model.pick('author', 'movieName');
-        this.collection.add(items);
-    },
-
-    itemAdded: function() {
-        this.model.set({
-            author: '',
-            movieName: ''
-        });
     }
 });
 
