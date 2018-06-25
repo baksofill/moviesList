@@ -4,7 +4,8 @@ var Backbone = require('backbone');
 var ToDo = Backbone.Model.extend({
     defaults: {
         author: '',
-        movieName: ''
+        movieName: '',
+        releaseDate: ''
     },
 
     validate: function(attrs) {
