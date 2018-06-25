@@ -3,6 +3,7 @@ var Marionette = require('backbone.marionette');
 
 var FormView = Marionette.LayoutView.extend({
     tagName: 'form',
+    className: 'mainForm',
     template: require('./movieForm.jst'),
 
     triggers: {
