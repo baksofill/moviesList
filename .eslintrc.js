@@ -1,8 +1,7 @@
 module.exports = {
     "env": {
         "browser": true,
-        "commonjs": true,
-        "es6": true
+        "commonjs": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
@@ -19,9 +18,13 @@ module.exports = {
         ],
         "quotes": [
             "error",
-            "single"
+            "double"
         ],
         "semi": [
+            "error",
+            "always"
+        ],
+        "eol-last": [
             "error",
             "always"
         ]
