@@ -4,7 +4,7 @@ var MovieModel = require('./movies-model');
 
 
 var Controller = Marionette.Object.extend({
-    initialize: function() {
+    initialize: function () {
         this.options.regionManager = new Marionette.RegionManager({
             regions: {
                 main: '#app-hook'
@@ -22,12 +22,12 @@ var Controller = Marionette.Object.extend({
     },
 
 
-    index: function() {
+    index: function () {
         var movie = this.getOption('movie');
         movie.triggerMethod('show:movie:form');
     },
 
-    listEntry: function() {
+    listEntry: function () {
         var movie = this.getOption('movie');
         movie.triggerMethod('show:movie:list');
     },
@@ -39,15 +39,15 @@ var Controller = Marionette.Object.extend({
 
 var Router = Marionette.AppRouter.extend({
     appRoutes: {
-        ''          : 'index',
-        'list'      : 'listEntry',
-        '*other'    : 'default'
+        '': 'index',
+        'list': 'listEntry',
+        '*other': 'default'
     },
 
-    initialize: function() {
+    initialize: function () {
         this.controller = new Controller({
             initialData: this.getOption('initialData')
-    });
+        });
     }
 });
 

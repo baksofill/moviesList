@@ -12,29 +12,28 @@ var MovieList = Marionette.LayoutView.extend({
 
 
     regions: {
-        form: '.form',
-        list: '.list'
+        mainContainer: '.mainContainer'
     },
 
     collectionEvents: {
         add: 'itemAdded'
     },
 
-    onShowMovieForm: function() {
+    onShowMovieForm: function () {
         var formView = new FormView({model: this.model});
-        this.showChildView('form', formView);
+        this.mainContainer.show(formView);
 
         Backbone.history.navigate('');
     },
 
-    onShowMovieList: function() {
+    onShowMovieList: function () {
         var listView = new ListView({collection: this.collection});
-        this.showChildView('list', listView);
+        this.mainContainer.show(listView);
 
         Backbone.history.navigate('list');
     },
 
-    onChildviewAddMovieItem: function(child) {
+    onChildviewAddMovieItem: function (child) {
         this.model.set({
             author: child.ui.author.val(),
             movieName: child.ui.movieName.val()
@@ -44,7 +43,7 @@ var MovieList = Marionette.LayoutView.extend({
         this.collection.add(items);
     },
 
-    itemAdded: function() {
+    itemAdded: function () {
         this.model.set({
             author: '',
             movieName: ''

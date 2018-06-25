@@ -10,14 +10,8 @@ var initialData = [
 ];
 
 var app = new Marionette.Application({
-    onStart: function(options) {
+    onStart: function (options) {
         var router = new Router(options);
-        // var movie = new MovieView({
-        //     collection: new Backbone.Collection(options.initialData),
-        //     model: new MovieModel()
-        // });
-        // movie.render();
-        // movie.triggerMethod('show');
 
         Backbone.history.start();
     }
