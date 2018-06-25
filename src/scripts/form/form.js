@@ -16,7 +16,8 @@ var FormView = Marionette.LayoutView.extend({
 
     ui: {
         author: '#id_author',
-        movieName: '#id_movieName'
+        movieName: '#id_movieName',
+        releaseDate: '#id_release-date'
     }
 });
 

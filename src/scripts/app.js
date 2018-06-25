@@ -5,8 +5,24 @@ var Router = require('./appRoutes');
 
 
 var initialData = [
-    {author: 'Spilberg', movieName: 'Cool movie about Marionette'},
-    {author: 'Tom Kruz', movieName: 'Some coding'}
+    {
+        author: 'Spilberg',
+        movieName: 'Cool movie about Marionette',
+        releaseDate: '2007',
+        duration: {
+            min: '30',
+            hr: '0.5'
+        }
+    },
+    {
+        author: 'Tom Kruz',
+        movieName: 'Some coding',
+        releaseDate: '2005',
+        duration: {
+            min: '30',
+            hr: '0.5'
+        }
+    }
 ];
 
 var app = new Marionette.Application({
