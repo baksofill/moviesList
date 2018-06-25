@@ -25,22 +25,23 @@ var Controller = Marionette.Object.extend({
     index: function() {
         var movie = this.getOption('movie');
         movie.triggerMethod('show:movie:form');
-
-        console.log('we are on index page');
     },
 
     listEntry: function() {
         var movie = this.getOption('movie');
         movie.triggerMethod('show:movie:list');
+    },
 
-        console.log('we are on LIST page');
+    default: function (other) {
+        console.log('we are on 404 page. ' + other + 'page not еxist');
     }
 });
 
 var Router = Marionette.AppRouter.extend({
     appRoutes: {
-        '': 'index',
-        'list': 'listEntry'
+        ''          : 'index',
+        'list'      : 'listEntry',
+        '*other'    : 'default'
     },
 
     initialize: function() {

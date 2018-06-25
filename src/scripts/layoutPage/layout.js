@@ -16,31 +16,41 @@ var MovieList = Marionette.LayoutView.extend({
         list: '.list'
     },
 
-    // ui: {
-    //     author: '#id_author',
-    //     form: 'form',
-    //     movieName: '#id_movieName'
-    // },
-
-    onShow: function() {
-
+    collectionEvents: {
+        add: 'itemAdded'
     },
 
     onShowMovieForm: function() {
         var formView = new FormView({model: this.model});
         this.showChildView('form', formView);
 
-        // Backbone.history.navigate('');
-
+        Backbone.history.navigate('');
     },
 
     onShowMovieList: function() {
         var listView = new ListView({collection: this.collection});
         this.showChildView('list', listView);
 
-        // Backbone.history.navigate('list');
+        Backbone.history.navigate('list');
+    },
 
+    onChildviewAddMovieItem: function(child) {
+        this.model.set({
+            author: child.ui.author.val(),
+            movieName: child.ui.movieName.val()
+        }, {validate: true});
+
+        var items = this.model.pick('author', 'movieName');
+        this.collection.add(items);
+    },
+
+    itemAdded: function() {
+        this.model.set({
+            author: '',
+            movieName: ''
+        });
     }
+
 });
 
 module.exports = MovieList;

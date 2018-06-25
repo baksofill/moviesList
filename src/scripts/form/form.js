@@ -6,11 +6,11 @@ var FormView = Marionette.LayoutView.extend({
     template: require('./movieForm.jst'),
 
     triggers: {
-        // submit: 'add:todo:item'
+        submit: 'add:movie:item'
     },
 
     modelEvents: {
-        // change: 'render'
+        change: 'render'
     },
 
     ui: {
