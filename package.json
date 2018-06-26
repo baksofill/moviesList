@@ -38,6 +38,7 @@
     "backbone.babysitter": "^0.1.12",
     "backbone.marionette": "2.4.1",
     "backbone.wreqr": "^1.4.0",
+    "bootstrap": "^3.3.7",
     "handlebars": "^4.0.5",
     "handlebars-loader": "^1.4.0",
     "jquery": "^3.1.0",

@@ -1,17 +1,17 @@
-var path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var path = require("path");
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = [{
-    name: 'js',
+    name: "js",
     context: __dirname,
-    entry: './src/scripts/app.js',
+    entry: "./src/scripts/app.js",
     output: {
-        filename: 'app.js',
-        path: path.join(__dirname, '/dist'),
-        publicPath: 'dist/'
+        filename: "app.js",
+        path: path.join(__dirname, "/dist"),
+        publicPath: "dist/"
     },
     resolve: {
-        extensions: ['', '.js', '.json']
+        extensions: ["", ".js", ".json"]
     },
     stats: {
         colors: true,
@@ -19,60 +19,45 @@ module.exports = [{
         chunks: false
     },
     module: {
-        // preLoaders: [{
-        //     test: /\.js$/,
-        //     exclude: /(node_modules|bower_components)/,
-        //     loader: 'jshint-loader'
-        //     // loader: 'underscore-template-loader'
-        // }],
-        loaders: [{
-            test: /\.js$/,
-            exclude: /(node_modules|bower_components)/,
-            loader: 'babel-loader',
-        }, {
-            test: /\.jst$/,
-            exclude: /(node_modules|bower_components)/,
-            // loader: 'handlebars-loader?runtime=handlebars/runtime'
-            loader: 'underscore-template-loader'
-        }]
+        loaders: [
+            {
+                test: /\.jst$/,
+                exclude: /(node_modules|bower_components)/,
+                loader: "underscore-template-loader"
+            }]
     },
     externals: {
-        jquery: '$',
-        lodash: '_',
-        backbone: 'Backbone',
-        // 'handlebars/runtime': 'Handlebars',
-        // 'handlebars': 'Handlebars'
+        jquery: "$",
+        lodash: "_",
+        backbone: "Backbone"
     }
 }, {
-    name: 'assets',
+    name: "assets",
     context: __dirname,
     entry: {
         styles: [
-            './src/styles/app.scss'
+            "./src/styles/app.scss"
         ]
     },
     output: {
-        filename: 'app.css',
-        path: path.join(__dirname, '/dist')
+        filename: "app.css",
+        path: path.join(__dirname, "/dist")
     },
     module: {
         preLoaders: [{
             test: /\.scss$/,
             exclude: /(node_modules|bower_components)/,
-            loader: 'sasslint'
+            loader: "sasslint"
         }],
         loaders: [{
             test: /\.scss$/,
-            loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader')
+            loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
         }]
     },
     plugins: [
-        new ExtractTextPlugin('app.css')//,
-        // new webpack.ProvidePlugin({
-        //     _: 'underscore'
-        // })
+        new ExtractTextPlugin("app.css")       
     ],
     sasslint: {
-        configFile: './.sass-lint.yml'
+        configFile: "./.sass-lint.yml"
     }
 }];
