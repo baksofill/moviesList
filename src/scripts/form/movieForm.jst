@@ -1,23 +1,72 @@
-<form >
+<form>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="input-group">
               <span class="input-group-addon">
                  Movie Name
               </span>
-              <input class="form-control" type="movieName" name="movieName" id="id_movieName" value="<%- movieName %>" />
+              <input class="form-control" type="movieName" name="movieName" id="id_movieName" value="" />
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="input-group">
+              <span class="input-group-addon">
+                 Director
+              </span>
+              <input class="form-control" type="author" name="author" id="id_author" value=""/>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle half-width" type="button" id="id_dropdown_menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Type
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdown-menu">
+                <li><a href="#">Movie</a></li>
+                <li><a href="#">TV series</a></li>
+              </ul>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="input-group">
+              <span class="input-group-addon">
+                 Release date
+              </span>
+              <input class="form-control" type="movieName" name="movieName" id="id_release_date" value="" />
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+              <span class="input-group-addon">
+                 Duration in min
+              </span>
+              <input class="form-control" type="movieName" name="movieName" id="" value="" />
             </div>
         </div>
 
         <div class="col-lg-6">
             <div class="input-group">
               <span class="input-group-addon">
-                 Author
+                 Duration in hr
               </span>
-              <input class="form-control" type="author" name="author" id="id_author" value="<%- author %>"/>
+              <input class="form-control" type="author" name="author" id="" value=""/>
             </div>
         </div>
     </div>
+    <br>
     <div class="text-right">
             <button id="btn-add" class="btn  btn-default">Add Movie</button>
     </div>
