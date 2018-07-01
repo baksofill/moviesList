@@ -1,5 +1,8 @@
 var ModalView = require("./modal");
 
+/**
+ * @class Layout view of all modal views
+ */
 var LayoutView = ModalView.extend({
     className: "modal fade",
 
@@ -8,10 +11,6 @@ var LayoutView = ModalView.extend({
         "role": "dialog"
     },
 
-    //template: function renderLayout() {
-    //    return "<div class='modal-dialog'><div class='modal-content'></div></div>";
-    //}
-    //template: _.template("<div class='modal-dialog'><div class='modal-content'></div></div>")
     template: function() {
         return `
 <div class='modal-dialog'>

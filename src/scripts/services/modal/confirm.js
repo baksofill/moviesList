@@ -1,6 +1,9 @@
 var ModalView = require("./modal");
 var defaultCaptions = require("./captions");
 
+/**
+ * @class View of bootstrap modal confirm
+ */
 var ConfirmView = ModalView.extend({
     template: function (data) {
         return `

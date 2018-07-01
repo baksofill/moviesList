@@ -13,6 +13,9 @@ var ES6Promise = PromisePolyfill.Promise;
 
 var viewClassesNames = ["LayoutView", "AlertView", "PromptView", "ConfirmView"];
 
+/**
+ *  @class application modal service
+ */
 var appModalService = ModalService.extend({
     LayoutView,
     AlertView,
@@ -34,6 +37,10 @@ var appModalService = ModalService.extend({
         }.bind(this));
     },
 
+    /**
+     * @method setup
+     * @param {Object} options
+     */
     setup: function(options = {}) {
         if(options) {
             _.extend(this, _.pick(options, viewClassesNames.concat(["el", "container"])));
@@ -41,7 +48,10 @@ var appModalService = ModalService.extend({
         this._prepareViewClasses();
     },
 
-    start() {
+    /**
+     * @method start - initializing modal service
+     */
+    start: function() {
         var layout = this.layout = new this.LayoutView();
 
         if (!this.container) {
@@ -73,29 +83,47 @@ var appModalService = ModalService.extend({
         });
     },
 
-    render(view) {
+    /**
+     * @method render
+     * @param {Backbone.View} view
+     */
+    render: function(view) {
         this.contentRegion.show(view);
     },
 
-    remove() {
+    /**
+     * @method remove
+     */
+    remove: function() {
         this.contentRegion.empty();
     },
 
-    animateIn() {
+    /**
+     * @method animateIn
+     */
+    animateIn: function() {
         return new ES6Promise(function(resolve) {
             this.once("modal:show", resolve);
             this.layout.$el.modal("show");
         }.bind(this));
     },
 
-    animateOut() {
+    /**
+     * @method animateOut
+     */
+    animateOut: function() {
         return new ES6Promise(function(resolve) {
             this.once("modal:hide", resolve);
             this.layout.$el.modal("hide");
         }.bind(this));
     },
 
-    animateSwap(oldView, newView) {
+    /**
+     * @method animateSwap
+     * @param {Backbone.View} oldView
+     * @param {Backbone.View} newView
+     */
+    animateSwap: function(oldView, newView) {
         oldView.$el.hide();
         newView.$el.show();
     }

@@ -1,6 +1,9 @@
 var ModalView = require("./modal");
 var defaultCaptions = require("./captions");
 
+/**
+ * @class View of bootstrap modal prompt
+ */
 var PromptView = ModalView.extend({
     tagName: "form",
     template: function (data) {

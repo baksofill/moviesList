@@ -1,27 +1,41 @@
 var Marionette = require("backbone.marionette");
 var modals = require("../services/modal");
 
+/**
+ * @class View for demonstration of modals alert, confirm and prompt
+ */
 var ModalView = Marionette.LayoutView.extend({
     tagName: "div",
     template: require("./view.jst"),
 
+    /**
+     * @name events
+     * @type {Object}
+     */
     events: {
         "click #alert": "showAlert",
         "click #confirm": "showConfirm",
         "click #prompt": "showPrompt",
     },
 
-    showAlert(e) {
+    /**
+     * @method showAlert
+     */
+    showAlert: function() {
         modals.close();
         modals.request("alert", {
             title: "Alert",
             text: "You are in danger!"
         }).then(function(val) {
+            console.log(val);
             this.log("alert", val);
         }.bind(this));
     },
 
-    showConfirm(e) {
+    /**
+     * @method showConfirm
+     */
+    showConfirm: function() {
         modals.close();
         modals.request("confirm", {
             title: "Confirmation",
@@ -31,7 +45,10 @@ var ModalView = Marionette.LayoutView.extend({
         }.bind(this));
     },
 
-    showPrompt(e) {
+    /**
+     * @method showPrompt
+     */
+    showPrompt: function() {
         modals.close();
         modals.request("prompt", {
             title: "Prompt",
@@ -42,7 +59,12 @@ var ModalView = Marionette.LayoutView.extend({
         }.bind(this));
     },
 
-    log(type, msg) {
+    /**
+     * @method log
+     * @param {String} type
+     * @param {String} msg
+     */
+    log: function(type, msg) {
         this.$("#log").append(`${type}: ${msg} <br/>`);
     }
 
