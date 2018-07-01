@@ -1,5 +1,6 @@
 var Marionette = require("backbone.marionette");
 var Router = require("./appRoutes");
+var modals = require("./services/modal");
 
 var initialData = [
     {
@@ -36,6 +37,10 @@ var app = new Marionette.Application({
 
         Backbone.history.start();
     }
+});
+
+modals.setup({
+    el: "#main-modal-container"
 });
 
 app.start({initialData: initialData});
