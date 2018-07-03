@@ -12,11 +12,11 @@ var LayoutView = ModalView.extend({
     },
 
     template: function() {
-        return `
-<div class='modal-dialog'>
-    <div class='modal-content'></div>
-</div>
-        `;
+        return "\
+<div class='modal-dialog'>\
+    <div class='modal-content'></div>\
+</div>\
+";
     }
 });
 
