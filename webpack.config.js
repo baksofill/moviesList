@@ -21,7 +21,7 @@ module.exports = [{
     module: {
         loaders: [
             {
-                test: /\.jst$/,
+                test: /\.html$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: "underscore-template-loader"
             }]

@@ -10,6 +10,7 @@ var initialData = [
             {option: "TV series"}
         ],
         releaseDate: "2007",
+        // better to use obj instead array
         duration: [
             {min: "30"},
             {hr: "0.5"}

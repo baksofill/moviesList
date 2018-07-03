@@ -1,36 +1,33 @@
-var Backbone = require('backbone');
-var Marionette = require('backbone.marionette');
-var MovieModel = require('../movies-model');
+var Backbone = require("backbone");
+var Marionette = require("backbone.marionette");
 
-
-var FormView = require('../form/form');
-var ListView = require('../listOfMovies/list');
+var FormView = require("../form/form");
+var ListView = require("../listOfMovies/list");
 
 var MovieList = Marionette.LayoutView.extend({
-    className: 'list-group',
-    template: require('./layout.jst'),
-
+    className: "list-group",
+    template: require("./layout.html"),
 
     regions: {
-        mainContainer: '.mainContainer'
+        mainContainer: ".mainContainer"
     },
 
     collectionEvents: {
-        add: 'itemAdded'
+        add: "itemAdded"
     },
 
     onShowMovieForm: function () {
         var formView = new FormView({model: this.model});
         this.mainContainer.show(formView);
 
-        Backbone.history.navigate('');
+        Backbone.history.navigate("");
     },
 
     onShowMovieList: function () {
         var listView = new ListView({collection: this.collection});
         this.mainContainer.show(listView);
 
-        Backbone.history.navigate('list');
+        Backbone.history.navigate("list");
     },
 
     onChildviewAddMovieItem: function (child) {
@@ -39,14 +36,14 @@ var MovieList = Marionette.LayoutView.extend({
             movieName: child.ui.movieName.val()
         }, {validate: true});
 
-        var items = this.model.pick('author', 'movieName');
+        var items = this.model.pick("author", "movieName");
         this.collection.add(items);
     },
 
     itemAdded: function () {
         this.model.set({
-            author: '',
-            movieName: ''
+            author: "",
+            movieName: ""
         });
     }
 
