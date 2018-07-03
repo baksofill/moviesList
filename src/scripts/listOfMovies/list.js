@@ -11,7 +11,7 @@ var MainListView = Marionette.CompositeView.extend({
     className: "list-group",
     template: require("./listWrapper.html"),
     childView: List,
-    childViewContainer: 'ul',
+    childViewContainer: "ul",
 
     ui: {
         dropdownToggle: ".glyphicon-pencil",
