@@ -1,22 +1,22 @@
-var Backbone = require('backbone');
+var Backbone = require("backbone");
 
 
 var ToDo = Backbone.Model.extend({
     defaults: {
-        author: '',
-        movieName: '',
-        releaseDate: ''
+        author: "",
+        movieName: "",
+        releaseDate: ""
     },
 
     validate: function(attrs) {
         var errors = {};
         var hasError = false;
         if (!attrs.author) {
-            errors.author = 'author must be set';
+            errors.author = "author must be set";
             hasError = true;
         }
         if (!attrs.movieName) {
-            errors.movieName = 'movieName must be set';
+            errors.movieName = "movieName must be set";
             hasError = true;
         }
 
@@ -25,6 +25,5 @@ var ToDo = Backbone.Model.extend({
         }
     }
 });
-
 
 module.exports = ToDo;

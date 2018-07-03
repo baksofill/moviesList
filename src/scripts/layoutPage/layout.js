@@ -1,16 +1,12 @@
 var Backbone = require("backbone");
 var Marionette = require("backbone.marionette");
-//var MovieModel = require("../movies-model");
-
 
 var FormView = require("../form/form");
 var ListView = require("../listOfMovies/list");
-var ModalView = require("../modalExample/view");
 
 var MovieList = Marionette.LayoutView.extend({
     className: "list-group",
-    template: require("./layout.jst"),
-
+    template: require("./layout.html"),
 
     regions: {
         mainContainer: ".mainContainer"
@@ -32,13 +28,6 @@ var MovieList = Marionette.LayoutView.extend({
         this.mainContainer.show(listView);
 
         Backbone.history.navigate("list");
-    },
-
-    onShowModalExample: function () {
-        var mv = new ModalView();
-        this.mainContainer.show(mv);
-
-        Backbone.history.navigate("modal");
     },
 
     onChildviewAddMovieItem: function (child) {

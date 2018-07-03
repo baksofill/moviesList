@@ -1,27 +1,35 @@
 var Marionette = require("backbone.marionette");
 
-var ToDo = Marionette.LayoutView.extend({
+var List = Marionette.LayoutView.extend({
     tagName: "li",
     className: "list-group-item",
-    template: require("./moviesList.jst")
+    template: require("./moviesList.html")
 });
 
-var TodoList = Marionette.CollectionView.extend({
-    tagName: "ul",
+var MainListView = Marionette.CompositeView.extend({
+    tagName: "span",
     className: "list-group",
-    childView: ToDo,
+    template: require("./listWrapper.html"),
+    childView: List,
+    childViewContainer: "ul",
 
     ui: {
-        dropdownToggle: ".glyphicon-pencil"
+        dropdownToggle: ".glyphicon-pencil",
+        btnAdd: "#btn-add"
     },
 
     events: {
-        "click @ui.dropdownToggle": "edit"
+        "click @ui.dropdownToggle": "edit",
+        "click @ui.btnAdd": "addNew"
     },
 
     edit: function () {
         console.log("start edit current item");
+    },
+
+    addNew: function () {
+        console.log("adding new item");
     }
 });
 
-module.exports = TodoList;
+module.exports = MainListView;
