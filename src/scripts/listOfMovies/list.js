@@ -14,15 +14,21 @@ var MainListView = Marionette.CompositeView.extend({
     childViewContainer: 'ul',
 
     ui: {
-        dropdownToggle: ".glyphicon-pencil"
+        dropdownToggle: ".glyphicon-pencil",
+        btnAdd: "#btn-add"
     },
 
     events: {
-        "click @ui.dropdownToggle": "edit"
+        "click @ui.dropdownToggle": "edit",
+        "click @ui.btnAdd": "addNew"
     },
 
     edit: function () {
         console.log("start edit current item");
+    },
+
+    addNew: function () {
+        console.log("adding new item");
     }
 });
 

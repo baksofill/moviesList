@@ -8,7 +8,9 @@
   cursor: pointer;
 }
 
-.btn.half-width {
-  text-align: left;
-  width: 100%;
+.dropdown {
+  .half-width {
+    text-align: left;
+    width: 100%;
+  }
 }
