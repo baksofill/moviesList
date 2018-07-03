@@ -8,7 +8,7 @@ var ListView = require('../listOfMovies/list');
 
 var MovieList = Marionette.LayoutView.extend({
     className: 'list-group',
-    template: require('./layout.jst'),
+    template: require('./layout.html'),
 
 
     regions: {

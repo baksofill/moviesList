@@ -4,7 +4,7 @@ var Marionette = require("backbone.marionette");
 var FormView = Marionette.LayoutView.extend({
     tagName: "form",
     className: "mainForm",
-    template: require("./movieForm.jst"),
+    template: require("./movieForm.html"),
 
     triggers: {
         submit: "add:movie:item"
@@ -26,8 +26,7 @@ var FormView = Marionette.LayoutView.extend({
     },
 
     onDropdownToggle: function () {
-        console.log("dropdown opened");
-        // this.ui.dropdownToggle.dropdown();  //not working :(
+        this.ui.dropdownToggle.dropdown();
     }
 });
 
