@@ -4,16 +4,7 @@ var Marionette = require("backbone.marionette");
  * @class Wrapper layout view for views in modal
  */
 var ModalFormWrapper = Marionette.LayoutView.extend({
-    template: function(data) {
-        return "\
-<div class='modal-header'>\
-    <h5 class='modal-title'>" + data.title + "</h5>\
-    <button type='button' class='close' aria-hidden='true'>&times;</button>\
-</div>\
-\
-<div id='modal-form-wrapper-content' class='modal-body'></div>\
-";
-    },
+    template: require("./formWrapper.html"),
 
     /**
      * @method templateHelpers

@@ -1,5 +1,6 @@
 var Backbone = require("backbone");
 var Marionette = require("backbone.marionette");
+var defaultCaptions = require("./captions");
 
 /**
  * @class View of typical bootstrap modals
@@ -11,6 +12,21 @@ var ModalView = Marionette.LayoutView.extend({
      */
     initialize: function(options = {}) {
         this.model = new Backbone.Model(options);
+    },
+
+    /**
+     * @method templateHelpers
+     */
+    templateHelpers: function() {
+        return {
+            title: this.getOption("title"),
+            text: this.getOption("text"),
+            value: this.getOption("value") || "",
+            buttonNo: this.getOption("no") || defaultCaptions.no,
+            buttonYes: this.getOption("yes") || defaultCaptions.yes,
+            buttonOk: this.getOption("ok") || defaultCaptions.ok,
+            buttonCancel: this.getOption("cancel") || defaultCaptions.cancel,
+        };
     },
 
     /**
