@@ -4,31 +4,26 @@ var modals = require("./services/modal");
 
 var initialData = [
     {
+        id: "1",
         author: "Spilberg",
         movieName: "Cool movie about Marionette",
-        dropdown: [
-            {option: "Movie"},
-            {option: "TV series"}
-        ],
+        typeOfFilm: "Movie",
         releaseDate: "2007",
-        // better to use obj instead array
-        duration: [
-            {min: "30"},
-            {hr: "0.5"}
-        ]
+        duration: {
+            type: "min",
+            value: "30"
+        }
     },
     {
+        id: "2",
         author: "Tom Kruz",
         movieName: "Some coding",
-        dropdown: [
-            {option: "Movie"},
-            {option: "TV series"}
-        ],
+        typeOfFilm: "TV series",
         releaseDate: "2005",
-        duration: [
-            {min: "30"},
-            {hr: "0.5"}
-        ]
+        duration: {
+            type: "hr",
+            value: "0.5"
+        }
     }
 ];
 
