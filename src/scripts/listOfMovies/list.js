@@ -39,7 +39,7 @@ var List = Marionette.LayoutView.extend({
         modals.request("close");
         modals.request("confirm", {
             title: "Confirm deletion",
-            text: "Do you want to delete the entry?",
+            text: "Do you want to delete the entry?"
         }).then(function(val) {
             if (val === true) {
                 Marionette.triggerMethodOn(this.getOption("layout"), "delete:movie:item", this.model);
