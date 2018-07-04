@@ -17,12 +17,12 @@ var viewClassesNames = ["LayoutView", "AlertView", "PromptView", "ConfirmView"];
  *  @class application modal service
  */
 var appModalService = ModalService.extend({
-    LayoutView,
-    AlertView,
-    ConfirmView,
-    PromptView,
+    LayoutView: LayoutView,
+    AlertView: AlertView,
+    ConfirmView: ConfirmView,
+    PromptView: PromptView,
 
-    _prepareViewClasses() {
+    _prepareViewClasses: function() {
         viewClassesNames.forEach(function(className) {
             var ViewClass = this[className];
             if (typeof ViewClass !== "function") {
@@ -41,11 +41,9 @@ var appModalService = ModalService.extend({
      * @method setup
      * @param {Object} options
      */
-    setup: function(options = {}) {
-        if(options) {
-            _.extend(this, _.pick(options, viewClassesNames.concat(["el", "container"])));
-        }
-        this._prepareViewClasses();
+    setup: function(options) {
+        options = options || {};
+        _.extend(this, _.pick(options, viewClassesNames.concat(["el", "container"])));
     },
 
     /**

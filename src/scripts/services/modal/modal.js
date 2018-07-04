@@ -10,7 +10,8 @@ var ModalView = Marionette.LayoutView.extend({
      * @method initialize
      * @param {Object} options
      */
-    initialize: function(options = {}) {
+    initialize: function(options) {
+        options = options || {};
         this.model = new Backbone.Model(options);
     },
 
