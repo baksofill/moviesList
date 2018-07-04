@@ -3,9 +3,15 @@ var Backbone = require("backbone");
 
 var ToDo = Backbone.Model.extend({
     defaults: {
+        id: "",
         author: "",
         movieName: "",
-        releaseDate: ""
+        releaseDate: "",
+        typeOfFilm: "",
+        duration: {
+            type: "",
+            value: ""
+        }
     },
 
     validate: function(attrs) {

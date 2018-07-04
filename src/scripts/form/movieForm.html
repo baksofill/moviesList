@@ -5,7 +5,7 @@
               <span class="input-group-addon">
                  Movie Name
               </span>
-              <input class="form-control" type="movieName" name="movieName" id="id_movieName" value="" />
+              <input class="form-control" type="movieName" name="movieName" id="id-movieName" value="<%- movieName %>" />
             </div>
         </div>
     </div>
@@ -16,23 +16,17 @@
               <span class="input-group-addon">
                  Director
               </span>
-              <input class="form-control" type="author" name="author" id="id_author" value=""/>
+              <input class="form-control" type="author" name="author" id="id-author" value="<%- author %>"/>
             </div>
         </div>
     </div>
     <br>
     <div class="row">
         <div class="col-lg-6">
-            <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle half-width" type="button" id="id_dropdown_menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Type
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdown-menu">
-                <li><a href="#">Movie</a></li>
-                <li><a href="#">TV series</a></li>
-              </ul>
-            </div>
+            <select class="form-control" id="dropdown" value="<%- typeOfFilm %>">
+                <option>Movie</option>
+                <option>TV series</option>
+            </select>
         </div>
     </div>
     <br>
@@ -42,7 +36,7 @@
               <span class="input-group-addon">
                  Release date
               </span>
-              <input class="form-control" type="movieName" name="movieName" id="id_release_date" value="" />
+              <input class="form-control" type="releaseDate" name="releaseDate" id="id-release-date" value="<%- releaseDate %>" />
             </div>
         </div>
     </div>
@@ -53,7 +47,7 @@
               <span class="input-group-addon">
                  Duration in min
               </span>
-              <input class="form-control" type="movieName" name="movieName" id="" value="" />
+              <input class="form-control" type="duration" name="duration" id="duration" value="<%- duration.value %>" />
             </div>
         </div>
 
@@ -62,7 +56,7 @@
               <span class="input-group-addon">
                  Duration in hr
               </span>
-              <input class="form-control" type="author" name="author" id="" value=""/>
+              <input class="form-control" type="duration" disabled name="duration" id="" value=""/>
             </div>
         </div>
     </div>

@@ -32,18 +32,32 @@ var MovieList = Marionette.LayoutView.extend({
 
     onChildviewAddMovieItem: function (child) {
         this.model.set({
+            id: Math.random(),
             author: child.ui.author.val(),
-            movieName: child.ui.movieName.val()
+            movieName: child.ui.movieName.val(),
+            typeOfFilm: child.ui.typeOfFilm.val(),
+            releaseDate: child.ui.releaseDate.val(),
+            duration: {
+                type: "min",
+                value: child.ui.duration.val()
+            }
         }, {validate: true});
 
-        var items = this.model.pick("author", "movieName");
+        var items = this.model.pick("id", "author", "movieName", "typeOfFilm", "releaseDate", "duration");
         this.collection.add(items);
     },
 
     itemAdded: function () {
         this.model.set({
+            id: "",
             author: "",
-            movieName: ""
+            movieName: "",
+            typeOfFilm: "",
+            releaseDate: "",
+            duration: {
+                type: "",
+                value: ""
+            }
         });
     }
 
