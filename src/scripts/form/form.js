@@ -5,13 +5,15 @@ var FormView = Marionette.LayoutView.extend({
     tagName: "form",
     className: "mainForm",
     template: require("./movieForm.html"),
-
-    triggers: {
-        submit: "add:movie:item"
+    templateHelpers: function() {
+        return {
+            buttonTitle: (this.getOption("mode") === "edit") ? "Save" : "Add Movie"
+        };
     },
 
     events: {
-        "click @ui.dropdownToggle": "onDropdownToggle"
+        "click @ui.dropdownToggle": "onDropdownToggle",
+        "submit": "onSubmit"
     },
 
     modelEvents: {
@@ -28,6 +30,10 @@ var FormView = Marionette.LayoutView.extend({
 
     onDropdownToggle: function () {
         this.ui.dropdownToggle.dropdown();
+    },
+    
+    onSubmit: function () {
+        Marionette.triggerMethodOn(this.getOption("layout"), (this.getOption("mode") ? this.getOption("mode") : "add") + ":movie:item", this);
     }
 });
 

@@ -17,20 +17,60 @@ var MovieList = Marionette.LayoutView.extend({
     },
 
     onShowMovieForm: function () {
-        var formView = new FormView({model: this.model});
+        var formView = new FormView({model: this.model, layout: this});
         this.mainContainer.show(formView);
 
         Backbone.history.navigate("");
     },
 
     onShowMovieList: function () {
-        var listView = new ListView({collection: this.collection});
+        var listView = new ListView({collection: this.collection, layout: this});
         this.mainContainer.show(listView);
 
         Backbone.history.navigate("list");
     },
 
-    onChildviewAddMovieItem: function (child) {
+    onEditMovieItem: function (view) {
+        this.model.set({
+            author: view.ui.author.val(),
+            movieName: view.ui.movieName.val(),
+            typeOfFilm: view.ui.typeOfFilm.val(),
+            releaseDate: view.ui.releaseDate.val(),
+            duration: {
+                type: "min",
+                value: view.ui.duration.val()
+            }
+        }, {validate: true});
+
+        var items = this.model.pick("author", "movieName", "typeOfFilm", "releaseDate", "duration");
+
+        this.collection.get(view.model).set(items);
+        this.onShowMovieList();
+        this.model.set(this.model.defaults);
+    },
+
+    onDeleteMovieItem: function (item) {
+        this.collection.remove(item);
+    },
+
+    onAddMovieItem: function (view) {
+        this.model.set({
+            id: Math.random(),
+            author: view.ui.author.val(),
+            movieName: view.ui.movieName.val(),
+            typeOfFilm: view.ui.typeOfFilm.val(),
+            releaseDate: view.ui.releaseDate.val(),
+            duration: {
+                type: "min",
+                value: view.ui.duration.val()
+            }
+        }, {validate: true});
+
+        var items = this.model.pick("id", "author", "movieName", "typeOfFilm", "releaseDate", "duration");
+        this.collection.add(items);
+    },
+
+/*    onChildviewAddMovieItem: function (child) {
         this.model.set({
             id: Math.random(),
             author: child.ui.author.val(),
@@ -45,7 +85,7 @@ var MovieList = Marionette.LayoutView.extend({
 
         var items = this.model.pick("id", "author", "movieName", "typeOfFilm", "releaseDate", "duration");
         this.collection.add(items);
-    },
+    },*/
 
     itemAdded: function () {
         this.model.set({
@@ -60,7 +100,6 @@ var MovieList = Marionette.LayoutView.extend({
             }
         });
     }
-
 });
 
 module.exports = MovieList;
