@@ -19,10 +19,11 @@ var FormView = Marionette.LayoutView.extend({
     },
 
     ui: {
-        author: "#id_author",
-        movieName: "#id_movieName",
-        releaseDate: "#id_release-date",
-        dropdownToggle: ".dropdown-toggle"
+        author: "#id-author",
+        movieName: "#id-movieName",
+        releaseDate: "#id-release-date",
+        typeOfFilm: "#dropdown",
+        duration: "#duration"
     },
 
     onDropdownToggle: function () {
