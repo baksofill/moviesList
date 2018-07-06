@@ -33,6 +33,11 @@ var Controller = Marionette.Object.extend({
         movie.triggerMethod("show:movie:list");
     },
 
+    modalExample: function () {
+        var movie = this.getOption("movie");
+        movie.triggerMethod("show:modal:example");
+    },
+
     default: function (other) {
         console.log("we are on 404 page. " + other + "page not еxist");
     }
@@ -42,6 +47,7 @@ var Router = Marionette.AppRouter.extend({
     appRoutes: {
         "": "index",
         "list": "listEntry",
+        "modal": "modalExample",
         "*other": "default"
     },
 
