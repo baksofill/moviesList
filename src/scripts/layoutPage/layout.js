@@ -30,21 +30,8 @@ var MovieList = Marionette.LayoutView.extend({
         Backbone.history.navigate("list");
     },
 
-    onEditMovieItem: function (view) {
-        this.model.set({
-            author: view.ui.author.val(),
-            movieName: view.ui.movieName.val(),
-            typeOfFilm: view.ui.typeOfFilm.val(),
-            releaseDate: view.ui.releaseDate.val(),
-            duration: {
-                type: "min",
-                value: view.ui.duration.val()
-            }
-        }, {validate: true});
-
-        var items = this.model.pick("author", "movieName", "typeOfFilm", "releaseDate", "duration");
-
-        this.collection.get(view.model).set(items);
+    onEditMovieItem: function (data) {
+        this.collection.get(data.id).set(data);
         this.onShowMovieList();
         this.model.set(this.model.defaults);
     },
@@ -53,35 +40,12 @@ var MovieList = Marionette.LayoutView.extend({
         this.collection.remove(item);
     },
 
-    onAddMovieItem: function (view) {
-        this.model.set({
-            id: Math.random(),
-            author: view.ui.author.val(),
-            movieName: view.ui.movieName.val(),
-            typeOfFilm: view.ui.typeOfFilm.val(),
-            releaseDate: view.ui.releaseDate.val(),
-            duration: {
-                type: "min",
-                value: view.ui.duration.val()
-            }
-        }, {validate: true});
-
-        var items = this.model.pick("id", "author", "movieName", "typeOfFilm", "releaseDate", "duration");
-        this.collection.add(items);
+    onAddMovieItem: function (data) {
+        this.collection.add(data);
     },
 
     itemAdded: function () {
-        this.model.set({
-            id: "",
-            author: "",
-            movieName: "",
-            typeOfFilm: "",
-            releaseDate: "",
-            duration: {
-                type: "",
-                value: ""
-            }
-        });
+        this.model.set(this.model.defaults);
     }
 });
 

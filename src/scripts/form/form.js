@@ -21,6 +21,7 @@ var FormView = Marionette.LayoutView.extend({
     },
 
     ui: {
+        id: "#id",
         author: "#id-author",
         movieName: "#id-movieName",
         releaseDate: "#id-release-date",
@@ -33,7 +34,30 @@ var FormView = Marionette.LayoutView.extend({
     },
     
     onSubmit: function () {
-        Marionette.triggerMethodOn(this.getOption("layout"), (this.getOption("mode") ? this.getOption("mode") : "add") + ":movie:item", this);
+        this.model.set({
+            id: (this.ui.id.val() === "") ? Math.random() : this.ui.id.val(),
+            author: this.ui.author.val(),
+            movieName: this.ui.movieName.val(),
+            typeOfFilm: this.ui.typeOfFilm.val(),
+            releaseDate: this.ui.releaseDate.val(),
+            duration: {
+                type: "min",
+                value: this.ui.duration.val()
+            }
+        }, {validate: true});
+
+        if (this.model.isValid()) {
+            Marionette.triggerMethodOn(this.getOption("layout"),
+                (this.getOption("mode") ? this.getOption("mode") : "add") + ":movie:item",
+                this.toObject()
+            );
+        } else {
+            console.log("invalid form data");
+        }
+    },
+
+    toObject: function () {
+        return this.model.pick("id", "author", "movieName", "typeOfFilm", "releaseDate", "duration");
     }
 });
 
