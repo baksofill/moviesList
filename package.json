@@ -15,9 +15,12 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^3.5.0",
+    "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^0.24.0",
     "eslint": "^5.0.0",
     "extract-text-webpack-plugin": "^1.0.1",
+    "html-replace-webpack-plugin": "^2.5.2",
+    "html-webpack-plugin": "^3.2.0",
     "jsdom": "^9.5.0",
     "jshint": "^2.9.3",
     "jshint-loader": "^0.8.3",
