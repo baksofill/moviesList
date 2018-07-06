@@ -44,6 +44,7 @@ var appModalService = ModalService.extend({
     setup: function(options) {
         options = options || {};
         _.extend(this, _.pick(options, viewClassesNames.concat(["el", "container"])));
+        this._prepareViewClasses();
     },
 
     /**
