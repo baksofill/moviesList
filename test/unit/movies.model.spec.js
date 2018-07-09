@@ -10,10 +10,6 @@ describe("Todo Model", function() {
             this.m = new MovieModel();
         });
 
-        it("should default the id to an empty string", function() {
-            assert.equal(this.m.get("id"), "");
-        });
-
         it("should default the author to an empty string", function() {
             assert.equal(this.m.get("author"), "");
         });

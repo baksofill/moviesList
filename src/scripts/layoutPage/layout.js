@@ -30,8 +30,8 @@ var MovieList = Marionette.LayoutView.extend({
         Backbone.history.navigate("list");
     },
 
-    onEditMovieItem: function (data) {
-        this.collection.get(data.id).set(data);
+    onEditMovieItem: function (data, cid) {
+        this.collection.get(cid).set(data);
         this.onShowMovieList();
         this.model.set(this.model.defaults);
     },

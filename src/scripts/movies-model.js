@@ -3,7 +3,6 @@ var Backbone = require("backbone");
 
 var ToDo = Backbone.Model.extend({
     defaults: {
-        id: "",
         author: "",
         movieName: "",
         releaseDate: "",

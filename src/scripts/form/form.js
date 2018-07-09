@@ -7,7 +7,8 @@ var FormView = Marionette.LayoutView.extend({
     template: require("./movieForm.html"),
     templateHelpers: function() {
         return {
-            buttonTitle: (this.getOption("mode") === "edit") ? "Save" : "Add Movie"
+            buttonTitle: (this.getOption("mode") === "edit") ? "Save" : "Add Movie",
+            cid: this.model.cid
         };
     },
 
@@ -21,7 +22,7 @@ var FormView = Marionette.LayoutView.extend({
     },
 
     ui: {
-        id: "#id",
+        cid: "#cid",
         author: "#id-author",
         movieName: "#id-movieName",
         releaseDate: "#id-release-date",
@@ -35,7 +36,6 @@ var FormView = Marionette.LayoutView.extend({
     
     onSubmit: function () {
         this.model.set({
-            id: (this.ui.id.val() === "") ? Math.random() : this.ui.id.val(),
             author: this.ui.author.val(),
             movieName: this.ui.movieName.val(),
             typeOfFilm: this.ui.typeOfFilm.val(),
@@ -49,7 +49,8 @@ var FormView = Marionette.LayoutView.extend({
         if (this.model.isValid()) {
             Marionette.triggerMethodOn(this.getOption("layout"),
                 (this.getOption("mode") ? this.getOption("mode") : "add") + ":movie:item",
-                this.toObject()
+                this.toObject(),
+                this.ui.cid.val()
             );
         } else {
             console.log("invalid form data");
@@ -57,7 +58,7 @@ var FormView = Marionette.LayoutView.extend({
     },
 
     toObject: function () {
-        return this.model.pick("id", "author", "movieName", "typeOfFilm", "releaseDate", "duration");
+        return this.model.pick("author", "movieName", "typeOfFilm", "releaseDate", "duration");
     }
 });
 
