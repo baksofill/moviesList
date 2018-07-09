@@ -42,6 +42,7 @@ var MovieList = Marionette.LayoutView.extend({
 
     onAddMovieItem: function (data) {
         this.collection.add(data);
+        this.onShowMovieList();
     },
 
     itemAdded: function () {
