@@ -1,8 +1,7 @@
-var Backbone = require("backbone");
 var Marionette = require("backbone.marionette");
 var MovieView = require("./layoutPage/layout");
 var MovieModel = require("./movies-model");
-
+var MovieCollection = require("./movies-collection");
 
 var Controller = Marionette.Object.extend({
     initialize: function () {
@@ -14,7 +13,7 @@ var Controller = Marionette.Object.extend({
         var initialData = this.getOption("initialData");
 
         var movie = new MovieView({
-            collection: new Backbone.Collection(initialData),
+            collection: new MovieCollection(initialData),
             model: new MovieModel()
         });
 
@@ -33,6 +32,11 @@ var Controller = Marionette.Object.extend({
         movie.triggerMethod("show:movie:list");
     },
 
+    handsontable: function () {
+        var movie = this.getOption("movie");
+        movie.triggerMethod("show:handsontable");
+    },
+
     default: function (other) {
         console.log("we are on 404 page. " + other + "page not еxist");
     }
@@ -42,6 +46,7 @@ var Router = Marionette.AppRouter.extend({
     appRoutes: {
         "": "index",
         "list": "listEntry",
+        "handsontable": "handsontable",
         "*other": "default"
     },
 

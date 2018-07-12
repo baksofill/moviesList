@@ -3,6 +3,8 @@ var Marionette = require("backbone.marionette");
 
 var FormView = require("../form/form");
 var ListView = require("../listOfMovies/list");
+var hotView = require("../handsOnTable/hotV1.js");
+
 
 var MovieList = Marionette.LayoutView.extend({
     className: "list-group",
@@ -30,6 +32,13 @@ var MovieList = Marionette.LayoutView.extend({
         Backbone.history.navigate("list");
     },
 
+    onShowHandsontable: function () {
+        var hot = new hotView({collection: this.collection, layout: this});
+        this.mainContainer.show(hot);
+
+        Backbone.history.navigate("handsontable");
+    },
+
     onEditMovieItem: function (data, cid) {
         this.collection.get(cid).set(data);
         this.onShowMovieList();
@@ -42,7 +51,7 @@ var MovieList = Marionette.LayoutView.extend({
 
     onAddMovieItem: function (data) {
         this.collection.add(data);
-        this.onShowMovieList();
+        this.onShowHandsontable();
     },
 
     itemAdded: function () {
