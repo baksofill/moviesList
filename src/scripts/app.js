@@ -27,33 +27,6 @@ var initialData = [
     }
 ];
 
-var schema = {
-    title: "Film form",
-    type: "obj",
-    properties: {
-        0: {
-            "type": "string",
-            "value": "author"
-        },
-        1: {
-            "type": "string",
-            "value": "movieName"
-        },
-        2: {
-            "type": "select",
-            "value": "typeOfFilm"
-        },
-        3: {
-            "type": "number",
-            "value": "releaseDate"
-        },
-        4: {
-            "type": "multiple",
-            "value": "duration"
-        }
-    }
-};
-
 var app = new Marionette.Application({
     onStart: function (options) {
         var router = new Router(options);
@@ -66,4 +39,4 @@ modals.setup({
     el: "#main-modal-container"
 });
 
-app.start({initialData: initialData, schema: schema});
+app.start({initialData: initialData});

@@ -1,10 +1,10 @@
 var Marionette = require("backbone.marionette");
 var Backbone = require("backbone");
 
-var FormElement = Marionette.LayoutView.extend({
+var SelectElement = Marionette.LayoutView.extend({
     tagName: "div",
     className: "elementForm",
-    template: require("./input.html"),
+    template: require("./select.html"),
 
     initialize: function(options) {
         this.model = new Backbone.Model(options.options);
@@ -16,4 +16,4 @@ var FormElement = Marionette.LayoutView.extend({
     }
 });
 
-module.exports = FormElement;
+module.exports = SelectElement;

@@ -1,31 +1,50 @@
 var Marionette = require("backbone.marionette");
 
-var ElementView = require("../formElements/input/input");
+var InputView = require("../formElements/input/input");
+var SelectView = require("../formElements/select/select");
 
 var schema = {
-    title: "Film form",
-    type: "obj",
-    properties: {
-        0: {
+    "title": "Film form",
+    "type": "obj",
+    "properties": {
+        "0": {
             "type": "string",
-            "value": "author"
-        },
-        1: {
+            "value": "author",
+            "dep": {
+                "0": {
+                    "target": "movieName",
+                    "action": "update value",
+                    "event": "change" //blure, focus
+                }
+            }
+
+        }
+        ,"1": {
             "type": "string",
             "value": "movieName"
-        },
-        2: {
+        }
+        ,"2": {
             "type": "select",
             "value": "typeOfFilm"
-        },
-        3: {
+        }
+        ,"3": {
             "type": "number",
             "value": "releaseDate"
-        },
-        4: {
-            "type": "multiple",
-            "value": "duration"
         }
+        // ,"4": {
+        //     "type": "obj",
+        //     "value": "duration",
+        //     "properties": {
+        //         "0": {
+        //             "type": "string",
+        //             "value": "min"
+        //         },
+        //         "1": {
+        //             "type": "string",
+        //             "value": "hr"
+        //         }
+        //     }
+        // }
     }
 };
 
@@ -39,11 +58,11 @@ var FormView = Marionette.LayoutView.extend({
         element: ".element"
     },
 
-    templateHelpers: function() {
-        return {
-            buttonTitle: (this.getOption("mode") === "edit") ? "Save" : "Add Movie"
-        };
-    },
+    // templateHelpers: function() {
+    //     return {
+    //         buttonTitle: (this.getOption("mode") === "edit") ? "Save" : "Add Movie"
+    //     };
+    // },
 
     events: {
         "submit": "onSubmit"
@@ -56,31 +75,52 @@ var FormView = Marionette.LayoutView.extend({
     ui: {
         author: "#id-author",
         movieName: "#id-movieName",
-        releaseDate: "#id-release-date",
-        typeOfFilm: "#dropdown",
-        duration: "#duration"
+        releaseDate: "#id-releaseDate",
+        typeOfFilm: "#id-typeOfFilm",
+        duration: "#id-duration"
     },
 
-    initialize: function () {
-        // debugger;
+    render: function () {
+
+        var unitedViews = this.parsingElements(schema);
+
+        return this.$el.append(unitedViews + this.template( this.model.toJSON() ));
     },
 
-    onShow: function () {
-        debugger;
-        // schema.properties.length;
-        for (key in schema.properties) {
-            var typeOfElement =  schema[key].type;
-            this.renderingCustomElement(typeOfElement);
+    parsingElements: function (data) {
+        var unitedViews = "";
+        for (var key in data.properties) {
+            // debugger;
+            var typeOfElement = data.properties[key].type;
+            var value = data.properties[key].value;
+            var elementView = this.selectingView(typeOfElement, value);
+            unitedViews += elementView.$el[0].outerHTML;
         }
-
-
-
-        var elementView = new ElementView({model: this.model});
-        this.showChildView("element", elementView);
+        return unitedViews;
     },
 
-    renderingCustomElement: function () {
+    selectingView: function (type, value) {
+        /*this.model.set({
+            releaseDate: view.ui.releaseDate.val(),
+            duration: {
+                type: "min",
+                value: view.ui.duration.val()
+            }
+        };*/
+        var myVal = this.model.attributes[value];
 
+        switch (type) {
+        case "string":
+            return new InputView({options: {key: value, value: myVal}});
+        case "number":
+            return new InputView({options: {key: value, value: myVal}});
+        case "select":
+            return new SelectView({options: {key: value, value: myVal}});
+        case "multiple":
+            return new InputView({options: {key: value, value: myVal}});
+        default:
+            console.log("something when wrong");
+        }
     },
     
     onSubmit: function () {
