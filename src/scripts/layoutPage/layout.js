@@ -13,7 +13,7 @@ var MovieList = Marionette.LayoutView.extend({
     },
 
     collectionEvents: {
-        add: "itemAdded"
+        add: "onShowMovieList"
     },
 
     onShowMovieForm: function () {
@@ -32,13 +32,14 @@ var MovieList = Marionette.LayoutView.extend({
 
     onEditMovieItem: function (view) {
         this.model.set({
-            author: view.ui.author.val(),
-            movieName: view.ui.movieName.val(),
-            typeOfFilm: view.ui.typeOfFilm.val(),
-            releaseDate: view.ui.releaseDate.val(),
+            id: Math.random(),
+            author: view.el[0].value,
+            movieName: view.el[1].value,
+            typeOfFilm: view.el[2].value,
+            releaseDate: view.el[3].value,
             duration: {
                 type: "min",
-                value: view.ui.duration.val()
+                value: "--"
             }
         }, {validate: true});
 
@@ -56,13 +57,13 @@ var MovieList = Marionette.LayoutView.extend({
     onAddMovieItem: function (view) {
         this.model.set({
             id: Math.random(),
-            author: view.ui.author.val(),
-            movieName: view.ui.movieName.val(),
-            typeOfFilm: view.ui.typeOfFilm.val(),
-            releaseDate: view.ui.releaseDate.val(),
+            author: view.el[0].value,
+            movieName: view.el[1].value,
+            typeOfFilm: view.el[2].value,
+            releaseDate: view.el[3].value,
             duration: {
                 type: "min",
-                value: view.ui.duration.val()
+                value: "--"
             }
         }, {validate: true});
 

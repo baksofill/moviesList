@@ -81,9 +81,7 @@ var FormView = Marionette.LayoutView.extend({
     },
 
     render: function () {
-
         var unitedViews = this.parsingElements(schema);
-
         return this.$el.append(unitedViews + this.template( this.model.toJSON() ));
     },
 
@@ -100,13 +98,6 @@ var FormView = Marionette.LayoutView.extend({
     },
 
     selectingView: function (type, value) {
-        /*this.model.set({
-            releaseDate: view.ui.releaseDate.val(),
-            duration: {
-                type: "min",
-                value: view.ui.duration.val()
-            }
-        };*/
         var myVal = this.model.attributes[value];
 
         switch (type) {
