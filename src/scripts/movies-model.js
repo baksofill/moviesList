@@ -1,18 +1,16 @@
 var Backbone = require("backbone");
 
+var schema = require("./schema.json");
+
+
+var defaultsData = {};
+for (var key in schema.properties) {
+    var value = schema.properties[key].value;
+    defaultsData[value]= "";
+}
 
 var ToDo = Backbone.Model.extend({
-    defaults: {
-        id: "",
-        author: "",
-        movieName: "",
-        releaseDate: "",
-        typeOfFilm: "",
-        duration: {
-            type: "",
-            value: ""
-        }
-    }
+    defaults: defaultsData
 });
 
 module.exports = ToDo;
