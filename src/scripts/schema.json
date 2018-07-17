@@ -1,0 +1,30 @@
+{
+  "title": "Film form",
+  "type": "obj",
+  "properties": {
+    "0": {
+      "type": "string",
+      "value": "author",
+      "dep": {
+        "0": {
+          "target": "movieName",
+          "action": "update value",
+          "event": "change"
+          //blure, focus
+        }
+      }
+    },
+    "1": {
+      "type": "string",
+      "value": "movieName"
+    },
+    "2": {
+      "type": "select",
+      "value": "typeOfFilm"
+    },
+    "3": {
+      "type": "number",
+      "value": "releaseDate"
+    }
+  }
+}

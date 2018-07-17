@@ -21,6 +21,10 @@ module.exports = [{
     module: {
         loaders: [
             {
+                test: /\.json$/,
+                loader: "json-loader"
+            },
+            {
                 test: /\.html$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: "underscore-template-loader"

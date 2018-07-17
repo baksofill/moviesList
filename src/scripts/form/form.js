@@ -3,7 +3,9 @@ var Marionette = require("backbone.marionette");
 var InputView = require("../formElements/input/input");
 var SelectView = require("../formElements/select/select");
 
-var schema = {
+var schema = require("../schema");
+
+/*var schema = {
     "title": "Film form",
     "type": "obj",
     "properties": {
@@ -46,7 +48,7 @@ var schema = {
         //     }
         // }
     }
-};
+};*/
 
 
 var FormView = Marionette.LayoutView.extend({
@@ -70,14 +72,6 @@ var FormView = Marionette.LayoutView.extend({
 
     modelEvents: {
         change: "render"
-    },
-
-    ui: {
-        author: "#id-author",
-        movieName: "#id-movieName",
-        releaseDate: "#id-releaseDate",
-        typeOfFilm: "#id-typeOfFilm",
-        duration: "#id-duration"
     },
 
     render: function () {
