@@ -3,6 +3,10 @@
   "type": "obj",
   "properties": {
     "0": {
+      "type": "id",
+      "value": "id"
+    },
+    "1": {
       "type": "string",
       "value": "author",
       "dep": {
@@ -10,19 +14,18 @@
           "target": "movieName",
           "action": "update value",
           "event": "change"
-          //blure, focus
         }
       }
     },
-    "1": {
+    "2": {
       "type": "string",
       "value": "movieName"
     },
-    "2": {
+    "3": {
       "type": "select",
       "value": "typeOfFilm"
     },
-    "3": {
+    "4": {
       "type": "number",
       "value": "releaseDate"
     }

@@ -4,6 +4,8 @@ var Marionette = require("backbone.marionette");
 var FormView = require("../form/form");
 var ListView = require("../listOfMovies/list");
 
+var schema = require("../schema.json");
+
 var MovieList = Marionette.LayoutView.extend({
     className: "list-group",
     template: require("./layout.html"),
@@ -24,6 +26,8 @@ var MovieList = Marionette.LayoutView.extend({
     },
 
     onShowMovieList: function () {
+        debugger;
+        this.itemAdded();
         var listView = new ListView({collection: this.collection, layout: this});
         this.mainContainer.show(listView);
 
@@ -31,19 +35,16 @@ var MovieList = Marionette.LayoutView.extend({
     },
 
     onEditMovieItem: function (view) {
-        this.model.set({
-            id: Math.random(),
-            author: view.el[0].value,
-            movieName: view.el[1].value,
-            typeOfFilm: view.el[2].value,
-            releaseDate: view.el[3].value,
-            duration: {
-                type: "min",
-                value: "--"
-            }
-        }, {validate: true});
+        var arrayOfKeys = [];
+        for (var key in schema.properties) {
+            var value = schema.properties[key].value;
+            var dataObj = {};
+            dataObj[value] = view.el[key].value;
+            this.model.set(dataObj, {validate: true});
+            arrayOfKeys.push(value);
+        }
 
-        var items = this.model.pick("author", "movieName", "typeOfFilm", "releaseDate", "duration");
+        var items = this.model.pick(arrayOfKeys);
 
         this.collection.get(view.model).set(items);
         this.onShowMovieList();
@@ -55,34 +56,26 @@ var MovieList = Marionette.LayoutView.extend({
     },
 
     onAddMovieItem: function (view) {
-        this.model.set({
-            id: Math.random(),
-            author: view.el[0].value,
-            movieName: view.el[1].value,
-            typeOfFilm: view.el[2].value,
-            releaseDate: view.el[3].value,
-            duration: {
-                type: "min",
-                value: "--"
-            }
-        }, {validate: true});
+        var arrayOfKeys = [];
+        for (var key in schema.properties) {
+            var value = schema.properties[key].value;
+            var dataObj = {};
+            dataObj[value] = view.el[key].value;
+            this.model.set(dataObj, {validate: true});
+            arrayOfKeys.push(value);
+        }
 
-        var items = this.model.pick("id", "author", "movieName", "typeOfFilm", "releaseDate", "duration");
+        var items = this.model.pick(arrayOfKeys);
         this.collection.add(items);
     },
 
     itemAdded: function () {
-        this.model.set({
-            id: "",
-            author: "",
-            movieName: "",
-            typeOfFilm: "",
-            releaseDate: "",
-            duration: {
-                type: "",
-                value: ""
-            }
-        });
+        for (var key in schema.properties) {
+            var value = schema.properties[key].value;
+            var dataObj = {};
+            dataObj[value] = "";
+            this.model.set(dataObj, {validate: true});
+        }
     }
 });
 
