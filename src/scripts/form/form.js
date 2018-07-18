@@ -1,18 +1,27 @@
 var Marionette = require("backbone.marionette");
 
+var IdView = require("../formElements/id/id");
+var InputView = require("../formElements/input/input");
+var SelectView = require("../formElements/select/select");
+
+var schema = require("../schema.json");
 
 var FormView = Marionette.LayoutView.extend({
     tagName: "form",
     className: "mainForm",
     template: require("./movieForm.html"),
-    templateHelpers: function() {
-        return {
-            buttonTitle: (this.getOption("mode") === "edit") ? "Save" : "Add Movie"
-        };
+
+    regions: {
+        element: ".element"
     },
 
+    // templateHelpers: function() {
+    //     return {
+    //         buttonTitle: (this.getOption("mode") === "edit") ? "Save" : "Add Movie"
+    //     };
+    // },
+
     events: {
-        "click @ui.dropdownToggle": "onDropdownToggle",
         "submit": "onSubmit"
     },
 
@@ -20,16 +29,41 @@ var FormView = Marionette.LayoutView.extend({
         change: "render"
     },
 
-    ui: {
-        author: "#id-author",
-        movieName: "#id-movieName",
-        releaseDate: "#id-release-date",
-        typeOfFilm: "#dropdown",
-        duration: "#duration"
+    render: function () {
+        var unitedViews = this.parsingElements(schema);
+        return this.$el.append(unitedViews + this.template( this.model.toJSON() ));
     },
 
-    onDropdownToggle: function () {
-        this.ui.dropdownToggle.dropdown();
+    parsingElements: function (data) {
+        var unitedViews = "";
+        for (var key in data.properties) {
+            var typeOfElement = data.properties[key].type;
+            var value = data.properties[key].value;
+            var elementView = this.selectingView(typeOfElement, value);
+            if(elementView){
+                unitedViews += elementView.$el[0].outerHTML;
+            }
+        }
+        return unitedViews;
+    },
+
+    selectingView: function (type, value) {
+        var myVal = this.model.attributes[value];
+
+        switch (type) {
+        case "id":
+            return new IdView({options: {key: value, value: Math.random()}});
+        case "string":
+            return new InputView({options: {key: value, value: myVal}});
+        case "number":
+            return new InputView({options: {key: value, value: myVal}});
+        case "select":
+            return new SelectView({options: {key: value, value: myVal}});
+        case "multiple":
+            return new InputView({options: {key: value, value: myVal}});
+        default:
+            console.log("something when wrong");
+        }
     },
     
     onSubmit: function () {

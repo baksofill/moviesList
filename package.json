@@ -24,6 +24,7 @@
     "jsdom": "^9.5.0",
     "jshint": "^2.9.3",
     "jshint-loader": "^0.8.3",
+    "json-loader": "^0.5.7",
     "mocha": "^3.0.2",
     "node-sass": "^3.8.0",
     "nyc": "^8.1.0",
