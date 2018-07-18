@@ -23,11 +23,16 @@ module.exports = [{
         chunks: false
     },
     module: {
-        loaders: [{
-            test: /\.html$/,
-            exclude: /(node_modules|bower_components)/,
-            loader: "underscore-template-loader"
-        }],
+        loaders: [
+            {
+                test: /\.json$/,
+                loader: "json-loader"
+            },
+            {
+                test: /\.html$/,
+                exclude: /(node_modules|bower_components)/,
+                loader: "underscore-template-loader"
+            }]
     },
     externals: {
         jquery: "$",

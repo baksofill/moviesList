@@ -52,7 +52,8 @@ var Router = Marionette.AppRouter.extend({
 
     initialize: function () {
         this.controller = new Controller({
-            initialData: this.getOption("initialData")
+            initialData: this.getOption("initialData"),
+            schema: this.getOption("schema")
         });
     }
 });

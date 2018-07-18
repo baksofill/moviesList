@@ -6,6 +6,8 @@ var ListView = require("../listOfMovies/list");
 var hotView = require("../handsOnTable/hotV1.js");
 
 
+var schema = require("../schema.json");
+
 var MovieList = Marionette.LayoutView.extend({
     className: "list-group",
     template: require("./layout.html"),
@@ -15,7 +17,7 @@ var MovieList = Marionette.LayoutView.extend({
     },
 
     collectionEvents: {
-        add: "itemAdded"
+        add: "onShowMovieList"
     },
 
     onShowMovieForm: function () {
@@ -26,21 +28,27 @@ var MovieList = Marionette.LayoutView.extend({
     },
 
     onShowMovieList: function () {
+        debugger;
+        this.itemAdded();
         var listView = new ListView({collection: this.collection, layout: this});
         this.mainContainer.show(listView);
 
         Backbone.history.navigate("list");
     },
 
-    onShowHandsontable: function () {
-        var hot = new hotView({collection: this.collection, layout: this});
-        this.mainContainer.show(hot);
+    onEditMovieItem: function (view) {
+        var arrayOfKeys = [];
+        for (var key in schema.properties) {
+            var value = schema.properties[key].value;
+            var dataObj = {};
+            dataObj[value] = view.el[key].value;
+            this.model.set(dataObj, {validate: true});
+            arrayOfKeys.push(value);
+        }
 
-        Backbone.history.navigate("handsontable");
-    },
+        var items = this.model.pick(arrayOfKeys);
 
-    onEditMovieItem: function (data, cid) {
-        this.collection.get(cid).set(data);
+        this.collection.get(view.model).set(items);
         this.onShowMovieList();
         this.model.set(this.model.defaults);
     },
@@ -49,13 +57,27 @@ var MovieList = Marionette.LayoutView.extend({
         this.collection.remove(item);
     },
 
-    onAddMovieItem: function (data) {
-        this.collection.add(data);
-        this.onShowHandsontable();
+    onAddMovieItem: function (view) {
+        var arrayOfKeys = [];
+        for (var key in schema.properties) {
+            var value = schema.properties[key].value;
+            var dataObj = {};
+            dataObj[value] = view.el[key].value;
+            this.model.set(dataObj, {validate: true});
+            arrayOfKeys.push(value);
+        }
+
+        var items = this.model.pick(arrayOfKeys);
+        this.collection.add(items);
     },
 
     itemAdded: function () {
-        this.model.set(this.model.defaults);
+        for (var key in schema.properties) {
+            var value = schema.properties[key].value;
+            var dataObj = {};
+            dataObj[value] = "";
+            this.model.set(dataObj, {validate: true});
+        }
     }
 });
 
