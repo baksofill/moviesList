@@ -1,4 +1,3 @@
-/* globals _: false */
 var Backbone = require("backbone");
 var MovieModel = require("./movies-model");
 

@@ -1,5 +1,3 @@
-/* globals _: false */
-
 var props = (function() {
     function property(attr) {
         return function(model, value) {

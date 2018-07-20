@@ -1,4 +1,3 @@
-/* globals _: false */
 var Marionette = require("backbone.marionette");
 var MovieModel = require("../movies-model");
 var Handsontable = require("handsontable");
