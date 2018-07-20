@@ -6,6 +6,7 @@ var modals = require("../services/modal");
 var FormView = require("../form/form");
 var ModalFormWrapper = require("../services/modal/formWrapper");
 
+var schema = require("../services/schema");
 var props = require("./props.js");
 var InputEditor = require("./editors/input.js");
 var SelEditor = require("./editors/select.js");
@@ -44,18 +45,13 @@ var hotView = Marionette.ItemView.extend({
             Handsontable.editors.registerEditor("selEditor", SelEditor);
         })(Handsontable);
 
+        var schemaProps = schema.getPropertiesAsArray();
         var hot = new Handsontable(container, {
             data: movieCollection,
             dataSchema: makeMovie,
             contextMenu: false,
-            colHeaders: ["id", "Author", "Movie name", "Release date", "Type"],
-            columns: [
-                {data: props[0].data, editor: "inputEditor"},
-                {data: props[1].data, editor: "inputEditor"},
-                {data: props[2].data, editor: "inputEditor"},
-                {data: props[3].data, editor: "inputEditor"},
-                {data: props[4].data, editor: "selEditor"},
-            ],
+            colHeaders: schemaProps.map(function(el) {return el.title;}),
+            columns: schemaProps.map(function(el, index) {return {data: props[index].data, editor: el.editor};}),
             rowHeaders: true,
         });
 

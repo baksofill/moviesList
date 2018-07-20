@@ -1,3 +1,5 @@
+var s = require("../services/schema");
+
 var props = (function() {
     function property(attr) {
         return function(model, value) {
@@ -8,13 +10,12 @@ var props = (function() {
         };
     }
 
-    return [
-        {key: "id", data: property("id")},
-        {key: "author", data: property("author")},
-        {key: "movieName", data: property("movieName")},
-        {key: "releaseDate", data: property("releaseDate")},
-        {key: "typeOfFilm", data: property("typeOfFilm")},
-    ];
+    return s.getPropertiesAsArray().map(function(el) {
+        return {
+            key: el.value,
+            data: property(el.value)
+        };
+    });
 })();
 
 module.exports = props;
