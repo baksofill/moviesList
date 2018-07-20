@@ -26,7 +26,6 @@ var MovieList = Marionette.LayoutView.extend({
     },
 
     onShowMovieList: function () {
-        debugger;
         this.itemAdded();
         var listView = new ListView({collection: this.collection, layout: this});
         this.mainContainer.show(listView);
@@ -35,6 +34,7 @@ var MovieList = Marionette.LayoutView.extend({
     },
 
     onEditMovieItem: function (view) {
+        // todo: need to refactoring, should be same as on this.onAddMovieItem();
         var arrayOfKeys = [];
         for (var key in schema.properties) {
             var value = schema.properties[key].value;
@@ -56,17 +56,33 @@ var MovieList = Marionette.LayoutView.extend({
     },
 
     onAddMovieItem: function (view) {
-        var arrayOfKeys = [];
-        for (var key in schema.properties) {
-            var value = schema.properties[key].value;
-            var dataObj = {};
-            dataObj[value] = view.el[key].value;
-            this.model.set(dataObj, {validate: true});
-            arrayOfKeys.push(value);
+        var items = this.model.pick(this.parsingElements(schema.properties, view));
+        this.collection.add(items);
+    },
+
+    parsingElements: function(data, view, counter, arrayOfKeys){
+        if (!arrayOfKeys){
+            arrayOfKeys = [];
         }
 
-        var items = this.model.pick(arrayOfKeys);
-        this.collection.add(items);
+        for (var key in data) {
+            if (!counter){
+                counter = key;
+            }
+            // todo: !counter ? counter = key;
+            var dataObj = {};
+
+            if (data[key].type !== "obj") {
+                var value = data[key].value;
+                dataObj[value] = view.el[counter].value;
+                this.model.set(dataObj, {validate: true});
+                counter++;
+                arrayOfKeys.push(value);
+            } else {
+                value = this.parsingElements(data[key].properties, view, counter, arrayOfKeys);
+            }
+        }
+        return arrayOfKeys;
     },
 
     itemAdded: function () {
