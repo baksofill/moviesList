@@ -28,6 +28,20 @@
     "4": {
       "type": "number",
       "value": "releaseDate"
-    }
+    },
+     "5": {
+         "type": "obj",
+         "value": "duration",
+         "properties": {
+             "0": {
+                 "type": "string",
+                 "value": "min"
+             },
+             "1": {
+                 "type": "string",
+                 "value": "hr"
+             }
+         }
+     }
   }
 }

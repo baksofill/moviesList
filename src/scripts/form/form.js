@@ -37,11 +37,15 @@ var FormView = Marionette.LayoutView.extend({
     parsingElements: function (data) {
         var unitedViews = "";
         for (var key in data.properties) {
-            var typeOfElement = data.properties[key].type;
-            var value = data.properties[key].value;
-            var elementView = this.selectingView(typeOfElement, value);
-            if(elementView){
-                unitedViews += elementView.$el[0].outerHTML;
+            if(data.properties[key].type !== "obj"){
+                var typeOfElement = data.properties[key].type;
+                var value = data.properties[key].value;
+                var elementView = this.selectingView(typeOfElement, value);
+                if(elementView){
+                    unitedViews += elementView.$el[0].outerHTML;
+                }
+            } else {
+                unitedViews += this.parsingElements(data.properties[key]);
             }
         }
         return unitedViews;

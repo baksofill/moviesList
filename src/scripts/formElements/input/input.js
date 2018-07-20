@@ -6,13 +6,31 @@ var FormElement = Marionette.LayoutView.extend({
     className: "elementForm",
     template: require("./input.html"),
 
-    initialize: function(options) {
-        this.model = new Backbone.Model(options.options);
+    initialize: function(data) {
+        this.model = new Backbone.Model(this.ititData(data.options));
         this.render();
+    },
+
+    ititData: function (data) {
+        for (var key in data) {
+            if (!data[key]) {
+                data[key] = "";
+            }
+        }
+        return data;
     },
 
     render: function () {
         return this.$el.html(this.template(this.model.toJSON()));
+    },
+
+    set: function (vals) {
+        this.model.set(vals);
+        this.render();
+    },
+
+    getValue: function () {
+        return this.$("#id-" + this.model.get("key")).val();
     }
 });
 
