@@ -32,9 +32,9 @@ var Controller = Marionette.Object.extend({
         movie.triggerMethod("show:movie:list");
     },
 
-    handsontable: function () {
+    table: function () {
         var movie = this.getOption("movie");
-        movie.triggerMethod("show:handsontable");
+        movie.triggerMethod("show:movie:table");
     },
 
     default: function (other) {
@@ -46,7 +46,7 @@ var Router = Marionette.AppRouter.extend({
     appRoutes: {
         "": "index",
         "list": "listEntry",
-        "handsontable": "handsontable",
+        "table": "table",
         "*other": "default"
     },
 

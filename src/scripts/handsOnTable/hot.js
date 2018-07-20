@@ -7,6 +7,10 @@ var modals = require("../services/modal");
 var FormView = require("../form/form");
 var ModalFormWrapper = require("../services/modal/formWrapper");
 
+var props = require("./props.js");
+var InputEditor = require("./editors/input.js");
+var SelEditor = require("./editors/select.js");
+
 var hotView = Marionette.ItemView.extend({
     tagName: "div",
     template: require("./hot.html"),
@@ -36,17 +40,22 @@ var hotView = Marionette.ItemView.extend({
         var movieCollection = this.collection;
         var container = document.getElementById("hot");
 
+        (function(Handsontable){
+            Handsontable.editors.registerEditor("inputEditor", InputEditor);
+            Handsontable.editors.registerEditor("selEditor", SelEditor);
+        })(Handsontable);
 
         var hot = new Handsontable(container, {
             data: movieCollection,
             dataSchema: makeMovie,
             contextMenu: false,
-            colHeaders: ["Author", "Movie name", "Release date", "Type"],
+            colHeaders: ["id", "Author", "Movie name", "Release date", "Type"],
             columns: [
-                {data: property("author")},
-                {data: property("movieName"), type: "text"},
-                {data: property("releaseDate")},
-                {data: property("typeOfFilm")},
+                {data: props[0].data, editor: "inputEditor"},
+                {data: props[1].data, editor: "inputEditor"},
+                {data: props[2].data, editor: "inputEditor"},
+                {data: props[3].data, editor: "inputEditor"},
+                {data: props[4].data, editor: "selEditor"},
             ],
             rowHeaders: true,
         });
@@ -57,15 +66,6 @@ var hotView = Marionette.ItemView.extend({
 
         function makeMovie() {
             return new MovieModel();
-        }
-
-        function property(attr) {
-            return function (model, value) {
-                if (_.isUndefined(value)) {
-                    return model.get(attr);
-                }
-                model.set(attr, value);
-            };
         }
     },
 
