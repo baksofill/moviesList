@@ -30,6 +30,7 @@ var FormView = Marionette.LayoutView.extend({
     },
 
     render: function () {
+        this.els = [];
         var unitedViews = this.parsingElements(schema);
         return this.$el.append(unitedViews + this.template( this.model.toJSON() ));
     },
@@ -44,6 +45,11 @@ var FormView = Marionette.LayoutView.extend({
                 data.properties[key].options ? options = data.properties[key].options : options = [];
                 var elementView = this.selectingView(typeOfElement, value, options);
                 if(elementView){
+                    this.els.push({
+                        key: data.properties[key].value,
+                        type: data.properties[key].type,
+                        view: elementView
+                    });
                     unitedViews += elementView.$el[0].outerHTML;
                 }
             } else {
@@ -73,22 +79,17 @@ var FormView = Marionette.LayoutView.extend({
     },
     
     onSubmit: function () {
-        this.model.set({
-            author: this.ui.author.val(),
-            movieName: this.ui.movieName.val(),
-            typeOfFilm: this.ui.typeOfFilm.val(),
-            releaseDate: this.ui.releaseDate.val(),
-            duration: {
-                type: "min",
-                value: this.ui.duration.val()
-            }
-        }, {validate: true});
+        var data = {};
+        this.els.forEach(function(el) {
+            data[el.key] = this.$(el.view.getId()).val();
+        });
+        this.model.set(data, {validate: true});
 
         if (this.model.isValid()) {
             Marionette.triggerMethodOn(this.getOption("layout"),
                 (this.getOption("mode") ? this.getOption("mode") : "add") + ":movie:item",
                 this.toObject(),
-                this.ui.cid.val()
+                this.model.cid
             );
         } else {
             console.log("invalid form data");
@@ -96,7 +97,7 @@ var FormView = Marionette.LayoutView.extend({
     },
 
     toObject: function () {
-        return this.model.pick("author", "movieName", "typeOfFilm", "releaseDate", "duration");
+        return this.model.pick(this.els.map(function(el) {return el.key;}));
     }
 });
 

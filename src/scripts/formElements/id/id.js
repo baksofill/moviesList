@@ -13,6 +13,19 @@ var FormElement = Marionette.LayoutView.extend({
 
     render: function () {
         return this.$el.html(this.template(this.model.toJSON()));
+    },
+
+    set: function (vals) {
+        this.model.set(vals);
+        this.render();
+    },
+
+    getId: function() {
+        return "#id-" + this.model.get("key");
+    },
+
+    getValue: function () {
+        return this.$(this.getId()).val();
     }
 });
 
