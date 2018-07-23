@@ -71,7 +71,30 @@ var FormView = Marionette.LayoutView.extend({
     },
     
     onSubmit: function () {
-        Marionette.triggerMethodOn(this.getOption("layout"), (this.getOption("mode") ? this.getOption("mode") : "add") + ":movie:item", this);
+        this.model.set({
+            author: this.ui.author.val(),
+            movieName: this.ui.movieName.val(),
+            typeOfFilm: this.ui.typeOfFilm.val(),
+            releaseDate: this.ui.releaseDate.val(),
+            duration: {
+                type: "min",
+                value: this.ui.duration.val()
+            }
+        }, {validate: true});
+
+        if (this.model.isValid()) {
+            Marionette.triggerMethodOn(this.getOption("layout"),
+                (this.getOption("mode") ? this.getOption("mode") : "add") + ":movie:item",
+                this.toObject(),
+                this.ui.cid.val()
+            );
+        } else {
+            console.log("invalid form data");
+        }
+    },
+
+    toObject: function () {
+        return this.model.pick("author", "movieName", "typeOfFilm", "releaseDate", "duration");
     }
 });
 
