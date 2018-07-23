@@ -64,34 +64,8 @@ var MovieList = Marionette.LayoutView.extend({
         this.collection.remove(item);
     },
 
-    onAddMovieItem: function (view) {
-        var items = this.model.pick(this.parsingElements(schema.properties, view));
-        this.collection.add(items);
-    },
-
-    parsingElements: function(data, view, counter, arrayOfKeys){
-        if (!arrayOfKeys){
-            arrayOfKeys = [];
-        }
-
-        for (var key in data) {
-            if (!counter){
-                counter = key;
-            }
-            // todo: !counter ? counter = key;
-            var dataObj = {};
-
-            if (data[key].type !== "obj") {
-                var value = data[key].value;
-                dataObj[value] = view.el[counter].value;
-                this.model.set(dataObj, {validate: true});
-                counter++;
-                arrayOfKeys.push(value);
-            } else {
-                value = this.parsingElements(data[key].properties, view, counter, arrayOfKeys);
-            }
-        }
-        return arrayOfKeys;
+    onAddMovieItem: function (data) {
+        this.collection.add(data);
     },
 
     itemAdded: function () {
