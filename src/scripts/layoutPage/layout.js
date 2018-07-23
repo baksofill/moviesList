@@ -48,7 +48,6 @@ var MovieList = Marionette.LayoutView.extend({
         for (var key in data) {
             arrayOfKeys.push(key);
         }
-
         this.model.set(data, {validate: true});
         var items = this.model.pick(arrayOfKeys);
 
