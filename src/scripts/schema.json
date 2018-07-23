@@ -23,7 +23,8 @@
     },
     "3": {
       "type": "select",
-      "value": "typeOfFilm"
+      "value": "typeOfFilm",
+      "options": ["Movie", "TV series"]
     },
     "4": {
       "type": "number",

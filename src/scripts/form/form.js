@@ -38,9 +38,11 @@ var FormView = Marionette.LayoutView.extend({
         var unitedViews = "";
         for (var key in data.properties) {
             if(data.properties[key].type !== "obj"){
+                var options;
                 var typeOfElement = data.properties[key].type;
                 var value = data.properties[key].value;
-                var elementView = this.selectingView(typeOfElement, value);
+                data.properties[key].options ? options = data.properties[key].options : options = [];
+                var elementView = this.selectingView(typeOfElement, value, options);
                 if(elementView){
                     unitedViews += elementView.$el[0].outerHTML;
                 }
@@ -51,7 +53,7 @@ var FormView = Marionette.LayoutView.extend({
         return unitedViews;
     },
 
-    selectingView: function (type, value) {
+    selectingView: function (type, value, optionsArray) {
         var myVal = this.model.attributes[value];
 
         switch (type) {
@@ -62,7 +64,7 @@ var FormView = Marionette.LayoutView.extend({
         case "number":
             return new InputView({options: {key: value, value: myVal}});
         case "select":
-            return new SelectView({options: {key: value, value: myVal}});
+            return new SelectView({options: {key: value, value: myVal, options: optionsArray}});
         case "multiple":
             return new InputView({options: {key: value, value: myVal}});
         default:
