@@ -1,8 +1,13 @@
 <div class="row">
     <div class="col-lg-6">
         <select class="form-control" id="id-<%- key %>" value="<%- value %>">
-            <option>Movie</option>
-            <option>TV series</option>
+            <%
+                _.each(options, function(element, index, list){
+            %>
+                <option <%= (element == value) ? "selected" : "" %> ><%= element %></option>
+            <%
+                });
+            %>
         </select>
     </div>
 </div>

@@ -12,7 +12,7 @@ var SelectElement = Marionette.LayoutView.extend({
     },
 
     ititData: function (data) {
-        return _.defaults(data, {key: "", value: ""});
+        return _.defaults(data, {key: "", value: "", options: [""]});
     },
 
     render: function () {
