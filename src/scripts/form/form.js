@@ -38,10 +38,6 @@ var FormView = Marionette.LayoutView.extend({
         }.bind(this));
     },
 
-    regions: {
-        container: "#schema-container"
-    },
-
     templateHelpers: function() {
         return {
             buttonTitle: (this.getOption("mode") === "edit") ? "Save" : "Add Movie",
