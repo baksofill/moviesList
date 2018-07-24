@@ -42,20 +42,16 @@ var MovieList = Marionette.LayoutView.extend({
         Backbone.history.navigate("handsontable");
     },
 
-    onEditMovieItem: function (view) {
-        // todo: need to refactoring, should be same as on this.onAddMovieItem();
+    onEditMovieItem: function (data) {
         var arrayOfKeys = [];
-        for (var key in schema.properties) {
-            var value = schema.properties[key].value;
-            var dataObj = {};
-            dataObj[value] = view.el[key].value;
-            this.model.set(dataObj, {validate: true});
-            arrayOfKeys.push(value);
-        }
 
+        for (var key in data) {
+            arrayOfKeys.push(key);
+        }
+        this.model.set(data, {validate: true});
         var items = this.model.pick(arrayOfKeys);
 
-        this.collection.get(view.model).set(items);
+        this.collection.get(this.model).set(items);
         this.onShowMovieList();
         this.model.set(this.model.defaults);
     },
