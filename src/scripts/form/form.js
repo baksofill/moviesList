@@ -11,15 +11,35 @@ var FormView = Marionette.LayoutView.extend({
     className: "mainForm",
     template: require("./movieForm.html"),
 
-    regions: {
-        element: ".element"
+    initialize: function(){
+        this.els = [];
+        for (var key in schema.properties) {
+            if(schema.properties[key].type !== "obj"){
+                var options;
+                var typeOfElement = schema.properties[key].type;
+                var value = schema.properties[key].value;
+                schema.properties[key].options ? options = schema.properties[key].options : options = [];
+                var elementView = this.selectingView(typeOfElement, value, options);
+                if(elementView){
+                    this.els.push({
+                        key: schema.properties[key].value,
+                        type: schema.properties[key].type,
+                        view: elementView
+                    });
+                }
+            }
+        }
+        this.els.forEach(function(el, index) {
+            this.appendRegion(index);
+        }.bind(this));
     },
 
-    // templateHelpers: function() {
-    //     return {
-    //         buttonTitle: (this.getOption("mode") === "edit") ? "Save" : "Add Movie"
-    //     };
-    // },
+    templateHelpers: function() {
+        return {
+            buttonTitle: (this.getOption("mode") === "edit") ? "Save" : "Add Movie",
+            els: this.els
+        };
+    },
 
     events: {
         "submit": "onSubmit"
@@ -29,34 +49,19 @@ var FormView = Marionette.LayoutView.extend({
         change: "render"
     },
 
-    render: function () {
-        this.els = [];
-        var unitedViews = this.parsingElements(schema);
-        return this.$el.append(unitedViews + this.template( this.model.toJSON() ));
+    onShow: function() {
+        this.els.forEach(function(el, index) {
+            this.regionManager.get(this.getRegionName(index)).show(el.view);
+        }.bind(this));
     },
 
-    parsingElements: function (data) {
-        var unitedViews = "";
-        for (var key in data.properties) {
-            if(data.properties[key].type !== "obj"){
-                var options;
-                var typeOfElement = data.properties[key].type;
-                var value = data.properties[key].value;
-                data.properties[key].options ? options = data.properties[key].options : options = [];
-                var elementView = this.selectingView(typeOfElement, value, options);
-                if(elementView){
-                    this.els.push({
-                        key: data.properties[key].value,
-                        type: data.properties[key].type,
-                        view: elementView
-                    });
-                    unitedViews += elementView.$el[0].outerHTML;
-                }
-            } else {
-                unitedViews += this.parsingElements(data.properties[key]);
-            }
-        }
-        return unitedViews;
+    appendRegion: function(index){
+        var rName = this.getRegionName(index);
+        this.addRegion(rName, "#" + rName);
+    },
+
+    getRegionName: function(index){
+        return "elview" + index;
     },
 
     selectingView: function (type, value, optionsArray) {
@@ -81,7 +86,7 @@ var FormView = Marionette.LayoutView.extend({
     onSubmit: function () {
         var data = {};
         this.els.forEach(function(el) {
-            data[el.key] = this.$(el.view.getId()).val();
+            data[el.key] = el.view.getValue();
         });
         this.model.set(data, {validate: true});
 
