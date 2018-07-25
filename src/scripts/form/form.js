@@ -26,11 +26,7 @@ var FormView = Marionette.LayoutView.extend({
                         type: schema.properties[key].type,
                         view: elementView
                     });
-                    
-                    //unitedViews += elementView.$el[0].outerHTML;
                 }
-            } else {
-                //unitedViews += this.parsingElements(data.properties[key]);
             }
         }
         this.els.forEach(function(el, index) {
