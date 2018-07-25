@@ -3,6 +3,7 @@ var Marionette = require("backbone.marionette");
 var IdView = require("../formElements/id/id");
 var InputView = require("../formElements/input/input");
 var SelectView = require("../formElements/select/select");
+var $ = require("jquery");
 
 var schema = require("../schema.json");
 
@@ -53,6 +54,34 @@ var FormView = Marionette.LayoutView.extend({
         this.els.forEach(function(el, index) {
             this.regionManager.get(this.getRegionName(index)).show(el.view);
         }.bind(this));
+        debugger;
+        $(".mainForm").validate({
+            rules: {
+                author: {
+                    required: true,
+                    normalizer: function(value) {
+                        return $.trim(value);
+                    }
+                },
+                movieName: {
+                    required: true,
+                    minlength: 3
+                }
+            },
+            showErrors: function () {
+                debugger;
+            },
+            messages: {
+                author: {
+                    required: "please fill this fild"
+                },
+                movieName: {
+                    required: "please fill this fild",
+                    minlength: " min length is 3"
+                }
+
+            }
+        });
     },
 
     appendRegion: function(index){
@@ -89,6 +118,9 @@ var FormView = Marionette.LayoutView.extend({
             data[el.key] = el.view.getValue();
         });
         this.model.set(data, {validate: true});
+
+        console.log($(".mainForm").valid());
+        debugger;
 
         if (this.model.isValid()) {
             Marionette.triggerMethodOn(this.getOption("layout"),
