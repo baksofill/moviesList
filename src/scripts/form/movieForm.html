@@ -1,4 +1,7 @@
 <div class="text-right">
-    <button id="btn-save" class="btn  btn-default">Add Movie</button>
+    <% _.each(els, function(element, index, list) { %>
+        <div id="elview<%= index %>"></div>
+    <% }); %>
+    <button id="btn-save" class="btn  btn-default"><%= buttonTitle %></button>
 </div>
 
