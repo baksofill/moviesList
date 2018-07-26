@@ -13,8 +13,8 @@ var Schema = {
             return "inputEditor";
         case "select":
             return "selEditor";
-        case "multiple":
-            return "inputEditor";
+        case "obj":
+            return "objEditor";
         default:
             return "inputEditor";
         }
@@ -23,12 +23,9 @@ var Schema = {
     getProperties: function() {
         var props = {};
         for (var key in data.properties) {
-            props[key] = {
-                type: data.properties[key].type,
-                value: data.properties[key].value,
-                title: data.properties[key].value,
-                editor: this.getEditor(key),
-            };
+            props[key] = data.properties[key];
+            props[key].title = data.properties[key].value;
+            props[key].editor = this.getEditor(key);
         }
         return props;
     },
