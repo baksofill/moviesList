@@ -1,12 +1,14 @@
 var Handsontable = require("handsontable");
 var SelectView = require("../../formElements/select/select");
 var props = require("../props.js");
+var schema = require("../../services/schema");
 
 var SelEditor = Handsontable.editors.BaseEditor.prototype.extend();
 SelEditor.prototype.init = function () {
     this.div = document.createElement("DIV");
     this.div.style.display = "none";
 
+    this.schemaProps = schema.getPropertiesAsArray();
     this.iv = new SelectView({ options: { key: null, value: null } });
 
     // Attach node to DOM, by appending it to the container holding the table
@@ -18,7 +20,7 @@ SelEditor.prototype.prepare = function () {
     // Remember to invoke parent's method
     Handsontable.editors.BaseEditor.prototype.prepare.apply(this, arguments);
 
-    this.iv.set({ key: props[this.col].key, value: this.originalValue });
+    this.iv.set({ key: props[this.col].key, options: this.schemaProps[this.col].options, value: this.originalValue });
 };
 SelEditor.prototype.setValue = function (value) {
     this.iv.set({ value });

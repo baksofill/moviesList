@@ -10,6 +10,9 @@ var schema = require("../services/schema");
 var props = require("./props.js");
 var InputEditor = require("./editors/input.js");
 var SelEditor = require("./editors/select.js");
+var ObjEditor = require("./editors/obj.js");
+
+var DurationRenderer = require("./renderers/duration.js");
 
 var hotView = Marionette.ItemView.extend({
     tagName: "div",
@@ -43,6 +46,8 @@ var hotView = Marionette.ItemView.extend({
         (function(Handsontable){
             Handsontable.editors.registerEditor("inputEditor", InputEditor);
             Handsontable.editors.registerEditor("selEditor", SelEditor);
+            Handsontable.editors.registerEditor("objEditor", ObjEditor);
+            Handsontable.renderers.registerRenderer("durationRenderer", DurationRenderer);
         })(Handsontable);
 
         var schemaProps = schema.getPropertiesAsArray();
@@ -51,7 +56,7 @@ var hotView = Marionette.ItemView.extend({
             dataSchema: makeMovie,
             contextMenu: false,
             colHeaders: schemaProps.map(function(el) {return el.title;}),
-            columns: schemaProps.map(function(el, index) {return {data: props[index].data, editor: el.editor};}),
+            columns: schemaProps.map(function(el, index) {return {data: props[index].data, editor: el.editor, renderer: el.renderer};}),
             rowHeaders: true,
         });
 
@@ -62,6 +67,7 @@ var hotView = Marionette.ItemView.extend({
         function makeMovie() {
             return new MovieModel();
         }
+
     },
 
     onDomRefresh: function() {

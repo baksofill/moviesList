@@ -24,25 +24,33 @@
     "3": {
       "type": "select",
       "value": "typeOfFilm",
-      "options": ["Movie", "TV series"]
+      "options": [
+        "Movie",
+        "TV series"
+      ]
     },
     "4": {
       "type": "number",
       "value": "releaseDate"
     },
-     "5": {
-         "type": "obj",
-         "value": "duration",
-         "properties": {
-             "0": {
-                 "type": "string",
-                 "value": "min"
-             },
-             "1": {
-                 "type": "string",
-                 "value": "hr"
-             }
-         }
-     }
+    "5": {
+      "type": "obj",
+      "value": "duration",
+      "renderer": "durationRenderer",
+      "properties": {
+        "0": {
+          "type": "number",
+          "value": "value"
+        },
+        "1": {
+          "type": "select",
+          "value": "type",
+          "options": [
+            "min",
+            "hr"
+          ]
+        }
+      }
+    }
   }
 }
