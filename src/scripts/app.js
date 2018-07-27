@@ -12,7 +12,8 @@ var initialData = [
         duration: {
             type: "min",
             value: "30"
-        }
+        },
+        seasons: ""
     },
     {
         id: "2",
@@ -23,7 +24,8 @@ var initialData = [
         duration: {
             type: "hr",
             value: "0.5"
-        }
+        },
+        seasons: "4"
     }
 ];
 

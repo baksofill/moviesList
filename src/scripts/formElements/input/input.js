@@ -21,6 +21,7 @@ var FormElement = Marionette.LayoutView.extend({
 
     set: function (vals) {
         this.model.set(vals);
+        debugger;
         this.render();
     },
 

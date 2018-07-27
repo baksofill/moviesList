@@ -6,6 +6,7 @@ var SelectView = require("../formElements/select/select");
 var $ = require("jquery");
 
 var schema = require("../schema.json");
+var schemaService = require("../services/schema");
 
 var FormView = Marionette.LayoutView.extend({
     tagName: "form",
@@ -54,34 +55,36 @@ var FormView = Marionette.LayoutView.extend({
         this.els.forEach(function(el, index) {
             this.regionManager.get(this.getRegionName(index)).show(el.view);
         }.bind(this));
-        debugger;
-        $(".mainForm").validate({
-            rules: {
-                author: {
-                    required: true,
-                    normalizer: function(value) {
-                        return $.trim(value);
-                    }
-                },
-                movieName: {
-                    required: true,
-                    minlength: 3
-                }
-            },
-            showErrors: function () {
-                debugger;
-            },
-            messages: {
-                author: {
-                    required: "please fill this fild"
-                },
-                movieName: {
-                    required: "please fill this fild",
-                    minlength: " min length is 3"
-                }
-
-            }
-        });
+        // debugger;
+        // var validator = $(".mainForm").validate();
+        // validator.element( "#author" );
+        // $(".mainForm").validate({
+        //     rules: {
+        //         author: {
+        //             required: true,
+        //             normalizer: function(value) {
+        //                 return $.trim(value);
+        //             }
+        //         },
+        //         movieName: {
+        //             required: true,
+        //             minlength: 3
+        //         }
+        //     },
+        //     showErrors: function () {
+        //         debugger;
+        //     },
+        //     messages: {
+        //         author: {
+        //             required: "please fill this fild"
+        //         },
+        //         movieName: {
+        //             required: "please fill this fild",
+        //             minlength: " min length is 3"
+        //         }
+        //
+        //     }
+        // });
     },
 
     appendRegion: function(index){
@@ -95,6 +98,11 @@ var FormView = Marionette.LayoutView.extend({
 
     selectingView: function (type, value, optionsArray) {
         var myVal = this.model.attributes[value];
+        var currentDependency = {
+            // event: "change",
+            // dependItem: "seasons",
+            // action: "updateSeasons"
+        };
 
         switch (type) {
         case "id":
@@ -104,12 +112,20 @@ var FormView = Marionette.LayoutView.extend({
         case "number":
             return new InputView({options: {key: value, value: myVal}});
         case "select":
-            return new SelectView({options: {key: value, value: myVal, options: optionsArray}});
+            currentDependency = this.getDependencyData(myVal);
+            return new SelectView({options: {key: value, value: myVal, options: optionsArray, dep: currentDependency}});
         case "multiple":
             return new InputView({options: {key: value, value: myVal}});
         default:
             console.log("something when wrong");
         }
+    },
+    getDependencyData: function(){
+        return {
+            event: "change",
+            dependItem: "seasons",
+            action: "updateSeasons"
+        };
     },
     
     onSubmit: function () {
@@ -119,8 +135,8 @@ var FormView = Marionette.LayoutView.extend({
         });
         this.model.set(data, {validate: true});
 
-        console.log($(".mainForm").valid());
-        debugger;
+        // console.log($(".mainForm").valid());
+        // debugger;
 
         if (this.model.isValid()) {
             Marionette.triggerMethodOn(this.getOption("layout"),

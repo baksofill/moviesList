@@ -44,25 +44,41 @@
         "maxlength": "30"
       }
     },
-     "5": {
-         "type": "obj",
-         "value": "duration",
-         "properties": {
-             "0": {
-                 "type": "number",
-                 "value": "durationValue",
-                 "validation": {
-                   "required": "true",
-                   "minlength": "3",
-                   "maxlength": "30"
-                 }
-             },
-             "1": {
-                 "type": "select",
-                 "value": "durationUnit",
-                 "options": ["min", "hr"]
-             }
-         }
-     }
+    "5": {
+      "type": "obj",
+      "value": "duration",
+      "properties": {
+        "0": {
+          "type": "number",
+          "value": "durationValue",
+          "validation": {
+            "required": "true",
+            "minlength": "3",
+            "maxlength": "30"
+          }
+        },
+        "1": {
+          "type": "select",
+          "value": "durationUnit",
+          "options": [
+            "min",
+            "hr"
+          ]
+        }
+      }
+    },
+    "6": {
+      "type": "number",
+      "value": "seasons",
+      "dep": {
+        "0": {
+          "target": "typeOfFilm",
+          "action": "updateSeasons",
+          "event": "change"
+        }
+      }
+    }
+
+
   }
 }

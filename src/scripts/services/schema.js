@@ -35,7 +35,17 @@ var Schema = {
 
     getPropertiesAsArray: function() {
         return _.values(this.getProperties());
-    }
+    },
+
+    updateSeasons: function(value, onDependsValue) {
+        debugger;
+        if (onDependsValue === "Movie") {
+            return "";
+        } else if (onDependsValue === "TV series") {
+            return value || 1;
+        }
+        return null;
+    },
 };
 
 module.exports = Schema;
