@@ -7,8 +7,12 @@ var FormElement = Marionette.LayoutView.extend({
     template: require("./input.html"),
 
     initialize: function(data) {
+        this.key = data.options.key;
         this.model = new Backbone.Model(this.ititData(data.options));
         this.render();
+        if (data.options.validation) {
+            this.validation = data.options.validation;
+        }
     },
 
     ititData: function (data) {
@@ -19,17 +23,27 @@ var FormElement = Marionette.LayoutView.extend({
         return this.$el.html(this.template(this.model.toJSON()));
     },
 
+    getValidationOptions: function() {
+        var options = {
+            rules: {},
+        };
+        if (this.validation) {
+            options.rules[this.key] = this.validation;
+        }
+        return options;
+    },
+
     set: function (vals) {
         this.model.set(vals);
         this.render();
     },
 
     getId: function() {
-        return "#id-" + this.model.get("key");
+        return "#id-" + this.key;
     },
 
     getValue: function () {
-        return this.$(this.getId()).val();
+        return $(this.getId()).val();
     }
 });
 

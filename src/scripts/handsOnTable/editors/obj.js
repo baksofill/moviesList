@@ -1,14 +1,13 @@
 var Handsontable = require("handsontable");
 var ObjView = require("../../formElements/obj/obj");
 var props = require("../props.js");
-var schema = require("../../services/schema");
 
 var ObjEditor = Handsontable.editors.BaseEditor.prototype.extend();
 ObjEditor.prototype.init = function () {
     this.div = document.createElement("DIV");
     this.div.style.display = "none";
-
-    this.schemaProps = schema.getPropertiesAsArray();
+    this.form = document.createElement("FORM");
+    this.form.setAttribute("id", "hotEditorForm");
 
     this.instance.rootElement.appendChild(this.div);
 };
@@ -19,8 +18,9 @@ ObjEditor.prototype.prepare = function () {
     this.iv = new ObjView({
         options: {
             key: props[this.col].key,
-            properties: this.schemaProps[this.col].properties,
-            value: this.originalValue
+            properties: props[this.col].properties,
+            value: this.originalValue,
+            validation: props[this.col].validation
         }
     });
 };
@@ -49,24 +49,25 @@ ObjEditor.prototype.open = function () {
     this.div.style.left = tdOffset.left - rootOffset.left + "px";
     this.div.style.zIndex = 9999;
     this.div.style.height = height + "px";
-    this.div.style.minWidth = width + "px";
+    this.div.style.width = width + "px";
 
     // display the view
     this.div.style.display = "";
 
     // Attach node to DOM, by appending it to the container holding the table
     this.iv.render();
-    this.div.appendChild(this.iv.el);
+    this.form.appendChild(this.iv.el);
+    this.div.appendChild(this.form);
     this.iv.onShow();
+    $("#hotEditorForm").validate(this.iv.getValidationOptions());
 };
 ObjEditor.prototype.focus = function () {
     console.log("focus");
 };
 ObjEditor.prototype.close = function () {
     this.div.style.display = "none";
-    while (this.div.firstChild) {
-        this.div.removeChild(this.div.firstChild);
-    }
+    Handsontable.dom.empty(this.form);
+    Handsontable.dom.empty(this.div);
 };
 
 module.exports = ObjEditor;

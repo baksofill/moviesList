@@ -27,6 +27,7 @@ module.exports = {
         "no-console": "off"
     },
     "globals": {
-        "_": false
+        "_": false,
+        "$": false
     }
 };

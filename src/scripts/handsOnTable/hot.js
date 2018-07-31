@@ -55,8 +55,17 @@ var hotView = Marionette.ItemView.extend({
             data: movieCollection,
             dataSchema: makeMovie,
             contextMenu: false,
-            colHeaders: schemaProps.map(function(el) {return el.title;}),
-            columns: schemaProps.map(function(el, index) {return {data: props[index].data, editor: el.editor, renderer: el.renderer};}),
+            colHeaders: schemaProps.map(function(el) {
+                return el.title;
+            }),
+            columns: schemaProps.map(function(el, index) {
+                return {
+                    data: props[index].data,
+                    editor: el.editor,
+                    validator: props[index].validator,
+                    allowInvalid: false,
+                    renderer: el.renderer};
+            }),
             rowHeaders: true,
         });
 
@@ -67,7 +76,6 @@ var hotView = Marionette.ItemView.extend({
         function makeMovie() {
             return new MovieModel();
         }
-
     },
 
     onDomRefresh: function() {

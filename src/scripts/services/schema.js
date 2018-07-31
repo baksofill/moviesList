@@ -32,6 +32,17 @@ var Schema = {
 
     getPropertiesAsArray: function() {
         return _.values(this.getProperties());
+    },
+
+    setupValidators: function() {
+        $.validator.addMethod("releaseDate", function(value) {
+            if (!value || value.length != 4 || 1895 > value || value > (new Date()).getFullYear()) {
+                return false;
+            }
+            return true;
+
+        }, "Please specify the correct date of release");
+          
     }
 };
 

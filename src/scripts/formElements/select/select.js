@@ -7,8 +7,12 @@ var SelectElement = Marionette.LayoutView.extend({
     template: require("./select.html"),
 
     initialize: function(data) {
+        this.key = data.options.key;
         this.model = new Backbone.Model(this.ititData(data.options));
         this.render();
+        if (data.options.validation) {
+            this.validation = data.options.validation;
+        }
     },
 
     ititData: function (data) {
@@ -17,6 +21,16 @@ var SelectElement = Marionette.LayoutView.extend({
 
     render: function () {
         return this.$el.html(this.template(this.model.toJSON()));
+    },
+
+    getValidationOptions: function() {
+        var options = {
+            rules: {},
+        };
+        if (this.validation) {
+            options.rules[this.model.get("key")] = this.validation;
+        }
+        return options;
     },
 
     set: function (vals) {
@@ -29,7 +43,7 @@ var SelectElement = Marionette.LayoutView.extend({
     },
 
     getValue: function () {
-        return this.$(this.getId()).val();
+        return $(this.getId()).val();
     }
 });
 

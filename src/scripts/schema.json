@@ -9,6 +9,11 @@
     "1": {
       "type": "string",
       "value": "author",
+      "validation": {
+        "minlength": "3",
+        "maxlength": "30",
+        "required": true
+      },
       "dep": {
         "0": {
           "target": "movieName",
@@ -19,7 +24,12 @@
     },
     "2": {
       "type": "string",
-      "value": "movieName"
+      "value": "movieName",
+      "validation": {
+        "required": true,
+        "minlength": "4",
+        "maxlength": "34"
+      }
     },
     "3": {
       "type": "select",
@@ -31,7 +41,11 @@
     },
     "4": {
       "type": "number",
-      "value": "releaseDate"
+      "value": "releaseDate",
+      "validation": {
+        "required": true,
+        "releaseDate": true
+      }
     },
     "5": {
       "type": "obj",
@@ -40,7 +54,11 @@
       "properties": {
         "0": {
           "type": "number",
-          "value": "value"
+          "value": "value",
+          "validation": {
+            "required": true,
+            "number": true
+          }
         },
         "1": {
           "type": "select",
