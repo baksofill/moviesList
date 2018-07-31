@@ -6,7 +6,6 @@ var modals = require("../services/modal");
 var FormView = require("../form/form");
 var ModalFormWrapper = require("../services/modal/formWrapper");
 
-var schema = require("../services/schema");
 var props = require("./props.js");
 var InputEditor = require("./editors/input.js");
 var SelEditor = require("./editors/select.js");
@@ -50,19 +49,18 @@ var hotView = Marionette.ItemView.extend({
             Handsontable.renderers.registerRenderer("durationRenderer", DurationRenderer);
         })(Handsontable);
 
-        var schemaProps = schema.getPropertiesAsArray();
         var hot = new Handsontable(container, {
             data: movieCollection,
             dataSchema: makeMovie,
             contextMenu: false,
-            colHeaders: schemaProps.map(function(el) {
+            colHeaders: props.map(function(el) {
                 return el.title;
             }),
-            columns: schemaProps.map(function(el, index) {
+            columns: props.map(function(el) {
                 return {
-                    data: props[index].data,
+                    data: el.data,
                     editor: el.editor,
-                    validator: props[index].validator,
+                    validator: el.validator,
                     allowInvalid: false,
                     renderer: el.renderer};
             }),

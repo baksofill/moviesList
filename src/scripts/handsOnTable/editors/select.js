@@ -56,6 +56,8 @@ SelEditor.prototype.focus = function () {
     console.log("focus");
 };
 SelEditor.prototype.close = function () {
+    var validator = $("#hotEditorForm").validate();
+    validator.destroy();
     this.div.style.display = "none";
     Handsontable.dom.empty(this.form);
     Handsontable.dom.empty(this.div);

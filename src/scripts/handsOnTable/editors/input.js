@@ -56,11 +56,11 @@ InputEditor.prototype.focus = function () {
     console.log("focus");
 };
 InputEditor.prototype.close = function () {
+    var validator = $("#hotEditorForm").validate();
+    validator.destroy();
     this.div.style.display = "none";
     Handsontable.dom.empty(this.form);
     Handsontable.dom.empty(this.div);
-    var validator = $("#hotEditorForm").validate();
-    validator.destroy();
 };
 
 module.exports = InputEditor;

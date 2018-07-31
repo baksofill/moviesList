@@ -21,13 +21,13 @@ var Schema = {
     },
 
     getProperties: function() {
-        var props = {};
+        var p = {};
         for (var key in data.properties) {
-            props[key] = data.properties[key];
-            props[key].title = data.properties[key].value;
-            props[key].editor = this.getEditor(key);
+            p[key] = _.clone(data.properties[key]);
+            p[key].title = data.properties[key].value;
+            p[key].editor = this.getEditor(key);
         }
-        return props;
+        return p;
     },
 
     getPropertiesAsArray: function() {

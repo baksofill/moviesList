@@ -65,6 +65,8 @@ ObjEditor.prototype.focus = function () {
     console.log("focus");
 };
 ObjEditor.prototype.close = function () {
+    var validator = $("#hotEditorForm").validate();
+    validator.destroy();
     this.div.style.display = "none";
     Handsontable.dom.empty(this.form);
     Handsontable.dom.empty(this.div);
