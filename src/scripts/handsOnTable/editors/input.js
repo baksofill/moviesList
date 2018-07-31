@@ -2,6 +2,11 @@ var Handsontable = require("handsontable");
 var InputView = require("../../formElements/input/input");
 var props = require("../props.js");
 
+/**
+ * @private
+ * @editor InputEditor
+ * @class InputEditor
+ */
 var InputEditor = Handsontable.editors.BaseEditor.prototype.extend();
 InputEditor.prototype.init = function () {
     this.div = document.createElement("DIV");

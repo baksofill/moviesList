@@ -1,5 +1,9 @@
 var s = require("../services/schema");
 
+/**
+ * Returns array of data for each column of table according to schema
+ * @returns {Array}
+ */
 var props = (function() {
     function property(attr) {
         return function(model, value) {

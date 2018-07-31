@@ -2,6 +2,11 @@ var Handsontable = require("handsontable");
 var SelectView = require("../../formElements/select/select");
 var props = require("../props.js");
 
+/**
+ * @private
+ * @editor SelEditor
+ * @class SelEditor
+ */
 var SelEditor = Handsontable.editors.BaseEditor.prototype.extend();
 SelEditor.prototype.init = function () {
     this.div = document.createElement("DIV");

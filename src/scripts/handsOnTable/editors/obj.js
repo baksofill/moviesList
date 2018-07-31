@@ -2,6 +2,11 @@ var Handsontable = require("handsontable");
 var ObjView = require("../../formElements/obj/obj");
 var props = require("../props.js");
 
+/**
+ * @private
+ * @editor ObjEditor
+ * @class ObjEditor
+ */
 var ObjEditor = Handsontable.editors.BaseEditor.prototype.extend();
 ObjEditor.prototype.init = function () {
     this.div = document.createElement("DIV");
