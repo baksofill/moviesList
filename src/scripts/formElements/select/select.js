@@ -39,7 +39,7 @@ var SelectElement = Marionette.LayoutView.extend({
     },
 
     getId: function() {
-        return "#id-" + this.model.get("key");
+        return "#id-" + this.key;
     },
 
     getValue: function () {
