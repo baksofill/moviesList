@@ -11,30 +11,37 @@ var SelectElement = Marionette.LayoutView.extend({
 
     events: {
         "submit": "onSubmit"
-        ,"change #id-typeOfFilm": "dependencyAction"
     },
 
-    dependencyAction: function (e) {
-        var onDependsValue = e.currentTarget.value;
-        var dependItemId = "#id-" + this.model.attributes.dep.dependItem;
-        var currentValue = $(dependItemId)[0].value;
-        $(dependItemId)[0].value = schemaService[this.model.attributes.dep.action](currentValue, onDependsValue);
-    },
-
-    initialize: function(data) {
+    initialize: function (data) {
         this.model = new Backbone.Model(this.ititData(data.options));
-        var eventKey = this.model.attributes.dep.event + " #id-" + this.model.attributes.key ;
-        if (eventKey !== "") {
-            this.events[eventKey] = "dependencyMethod";
-        }
         this.render();
     },
 
+    addEvents: function (depObj) {
+        depObj.watchedEl = this.model.attributes.key;
+        $("#id-" + [depObj.target]).on(depObj.event, depObj, function (e) {
+            $("#id-" + e.data.watchedEl)[0].value = schemaService[e.data.action]($("#id-" + e.data.watchedEl)[0].value,  e.currentTarget.value);
+        });
+    },
+
+    dependencyAction: function (action, onDependsEl) {
+        if ($("#id-" + onDependsEl)[0]) {
+            var onDependsValue =  $("#id-" + onDependsEl)[0].value;
+            this.$el[0].value = schemaService[action](this.$el[0].value, onDependsValue);
+        }
+    },
+
     ititData: function (data) {
-        return _.defaults(data, {key: "", value: "", options: [""], dep: {event: "", dependItem: "", action: ""}});
+        return _.defaults(data, {key: "", value: "", options: [""], dep: {}});
     },
 
     render: function () {
+        if (Object.keys(this.model.attributes.dep).length > 0) {
+            for (var key in this.model.attributes.dep) {
+                this.addEvents(this.model.attributes.dep[key]);
+            }
+        }
         return this.$el.html(this.template(this.model.toJSON()));
     },
 

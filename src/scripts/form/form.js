@@ -17,11 +17,12 @@ var FormView = Marionette.LayoutView.extend({
         this.els = [];
         for (var key in schema.properties) {
             if(schema.properties[key].type !== "obj"){
-                var options;
+                var options, dependencies;
                 var typeOfElement = schema.properties[key].type;
                 var value = schema.properties[key].value;
+                schema.properties[key].dep ? dependencies = schema.properties[key].dep : dependencies = {};
                 schema.properties[key].options ? options = schema.properties[key].options : options = [];
-                var elementView = this.selectingView(typeOfElement, value, options);
+                var elementView = this.selectingView(typeOfElement, value, options, dependencies);
                 if(elementView){
                     this.els.push({
                         key: schema.properties[key].value,
@@ -96,36 +97,23 @@ var FormView = Marionette.LayoutView.extend({
         return "elview" + index;
     },
 
-    selectingView: function (type, value, optionsArray) {
+    selectingView: function (type, value, optionsArray, dep) {
         var myVal = this.model.attributes[value];
-        var currentDependency = {
-            // event: "change",
-            // dependItem: "seasons",
-            // action: "updateSeasons"
-        };
 
         switch (type) {
         case "id":
             return new IdView({options: {key: value, value: Math.random()}});
         case "string":
-            return new InputView({options: {key: value, value: myVal}});
+            return new InputView({options: {key: value, value: myVal, dep: dep}});
         case "number":
-            return new InputView({options: {key: value, value: myVal}});
+            return new InputView({options: {key: value, value: myVal, dep: dep}});
         case "select":
-            currentDependency = this.getDependencyData(myVal);
-            return new SelectView({options: {key: value, value: myVal, options: optionsArray, dep: currentDependency}});
+            return new SelectView( {options: {key: value, value: myVal, options: optionsArray, dep: dep}});
         case "multiple":
-            return new InputView({options: {key: value, value: myVal}});
+            return new InputView({options: {key: value, value: myVal, dep: dep}});
         default:
             console.log("something when wrong");
         }
-    },
-    getDependencyData: function(){
-        return {
-            event: "change",
-            dependItem: "seasons",
-            action: "updateSeasons"
-        };
     },
     
     onSubmit: function () {
@@ -134,9 +122,6 @@ var FormView = Marionette.LayoutView.extend({
             data[el.key] = el.view.getValue();
         });
         this.model.set(data, {validate: true});
-
-        // console.log($(".mainForm").valid());
-        // debugger;
 
         if (this.model.isValid()) {
             Marionette.triggerMethodOn(this.getOption("layout"),
