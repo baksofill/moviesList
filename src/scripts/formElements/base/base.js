@@ -23,7 +23,6 @@ var FormElement = Marionette.LayoutView.extend({
     render: function () {
         if (Object.keys(this.model.attributes.dep).length > 0) {
             for (var key in this.model.attributes.dep) {
-                debugger;
                 this.addEvents(this.model.attributes.dep[key]);
             }
         }
