@@ -54,6 +54,18 @@ var Schema = {
     },
 
     /**
+     * Adds dependency method
+     */
+    updateSeasons: function(value, onDependsValue) {
+        if (onDependsValue === "Movie") {
+            return "";
+        } else if (onDependsValue === "TV series") {
+            return value || 1;
+        }
+        return null;
+    },
+
+    /**
      * Adds validators to jquery-validator
      */
     setupValidators: function() {

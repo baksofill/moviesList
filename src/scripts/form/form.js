@@ -28,6 +28,7 @@ var FormView = Marionette.LayoutView.extend({
                     key: schema.properties[key].value,
                     type: schema.properties[key].type,
                     validation: schema.properties[key].validation,
+                    dep:  schema.properties[key].dep,
                     view: elementView
                 });
             }
@@ -70,7 +71,8 @@ var FormView = Marionette.LayoutView.extend({
         var options = {
             key: properties.value,
             value: vals[properties.value],
-            validation: properties.validation
+            validation: properties.validation,
+            dep: properties.dep
         };
 
         switch (properties.type) {

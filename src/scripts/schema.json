@@ -13,13 +13,6 @@
         "minlength": "3",
         "maxlength": "30",
         "required": true
-      },
-      "dep": {
-        "0": {
-          "target": "movieName",
-          "action": "update value",
-          "event": "change"
-        }
       }
     },
     "2": {
@@ -67,6 +60,17 @@
             "min",
             "hr"
           ]
+        }
+      }
+    },
+    "6": {
+      "type": "number",
+      "value": "seasons",
+      "dep": {
+        "0": {
+          "action": "updateSeasons",
+          "event": "change",
+          "target": "typeOfFilm"
         }
       }
     }
