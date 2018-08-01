@@ -3,45 +3,40 @@ var Marionette = require("backbone.marionette");
 var IdView = require("../formElements/id/id");
 var InputView = require("../formElements/input/input");
 var SelectView = require("../formElements/select/select");
-var $ = require("jquery");
+var ObjView = require("../formElements/obj/obj");
 
 var schema = require("../schema.json");
 var schemaService = require("../services/schema");
 
 var FormView = Marionette.LayoutView.extend({
-    tagName: "form",
+    tagName: "div",
     className: "mainForm",
     template: require("./movieForm.html"),
-
-    initialize: function(){
-        this.els = [];
-        for (var key in schema.properties) {
-            if(schema.properties[key].type !== "obj"){
-                var options, dependencies;
-                var typeOfElement = schema.properties[key].type;
-                var value = schema.properties[key].value;
-                schema.properties[key].dep ? dependencies = schema.properties[key].dep : dependencies = {};
-                schema.properties[key].options ? options = schema.properties[key].options : options = [];
-                var elementView = this.selectingView(typeOfElement, value, options, dependencies);
-                if(elementView){
-                    this.els.push({
-                        key: schema.properties[key].value,
-                        type: schema.properties[key].type,
-                        view: elementView
-                    });
-                }
-            }
-        }
-        this.els.forEach(function(el, index) {
-            this.appendRegion(index);
-        }.bind(this));
-    },
 
     templateHelpers: function() {
         return {
             buttonTitle: (this.getOption("mode") === "edit") ? "Save" : "Add Movie",
             els: this.els
         };
+    },
+
+    initialize: function(){
+        this.els = [];
+        for (var key in schema.properties) {
+            var elementView = this.selectingView(schema.properties[key], this.model.attributes);
+            if(elementView){
+                this.els.push({
+                    key: schema.properties[key].value,
+                    type: schema.properties[key].type,
+                    validation: schema.properties[key].validation,
+					dep:  schema.properties[key].dep
+                    view: elementView
+                });
+            }
+        }
+        this.els.forEach(function(el) {
+            this.appendRegion(el.key);
+        }.bind(this));
     },
 
     events: {
@@ -53,70 +48,57 @@ var FormView = Marionette.LayoutView.extend({
     },
 
     onShow: function() {
-        this.els.forEach(function(el, index) {
-            this.regionManager.get(this.getRegionName(index)).show(el.view);
+        var vOptions = {
+            debug: true, 
+            rules: {},
+        };
+        this.els.forEach(function(el) {
+            this.regionManager.get(this.getRegionName(el.key)).show(el.view);
+            _.merge(vOptions, el.view.getValidationOptions());
         }.bind(this));
-        // debugger;
-        // var validator = $(".mainForm").validate();
-        // validator.element( "#author" );
-        // $(".mainForm").validate({
-        //     rules: {
-        //         author: {
-        //             required: true,
-        //             normalizer: function(value) {
-        //                 return $.trim(value);
-        //             }
-        //         },
-        //         movieName: {
-        //             required: true,
-        //             minlength: 3
-        //         }
-        //     },
-        //     showErrors: function () {
-        //         debugger;
-        //     },
-        //     messages: {
-        //         author: {
-        //             required: "please fill this fild"
-        //         },
-        //         movieName: {
-        //             required: "please fill this fild",
-        //             minlength: " min length is 3"
-        //         }
-        //
-        //     }
-        // });
+        this.$("#movieForm").validate(vOptions);
     },
 
-    appendRegion: function(index){
-        var rName = this.getRegionName(index);
+    appendRegion: function(key){
+        var rName = this.getRegionName(key);
         this.addRegion(rName, "#" + rName);
     },
 
-    getRegionName: function(index){
-        return "elview" + index;
+    getRegionName: function(key){
+        return "form-el-" + key;
     },
 
-    selectingView: function (type, value, optionsArray, dep) {
-        var myVal = this.model.attributes[value];
+    selectingView: function (properties, vals) {
+        var options = {
+            key: properties.value,
+            value: vals[properties.value],
+            validation: properties.validation,
+			dep: properties.dep
+        };
 
-        switch (type) {
+        switch (properties.type) {
         case "id":
-            return new IdView({options: {key: value, value: Math.random()}});
+            options.value = Math.random();
+            return new IdView({options});
         case "string":
-            return new InputView({options: {key: value, value: myVal, dep: dep}});
+            return new InputView({options});
         case "number":
-            return new InputView({options: {key: value, value: myVal, dep: dep}});
+            return new InputView({options});
         case "select":
-            return new SelectView( {options: {key: value, value: myVal, options: optionsArray, dep: dep}});
-        case "multiple":
-            return new InputView({options: {key: value, value: myVal, dep: dep}});
+            options.options = properties.options;
+            return new SelectView({options});
+        case "obj":
+            options.properties = properties.properties;
+            return new ObjView({model: this.model, options});
         default:
             console.log("something when wrong");
         }
     },
     
     onSubmit: function () {
+        if (!this.$("#movieForm").valid()) {
+            return;
+        }
         var data = {};
         this.els.forEach(function(el) {
             data[el.key] = el.view.getValue();
@@ -129,8 +111,6 @@ var FormView = Marionette.LayoutView.extend({
                 this.toObject(),
                 this.model.cid
             );
-        } else {
-            console.log("invalid form data");
         }
     },
 

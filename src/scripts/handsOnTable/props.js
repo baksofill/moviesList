@@ -1,5 +1,9 @@
 var s = require("../services/schema");
 
+/**
+ * Returns array of data for each column of table according to schema
+ * @returns {Array}
+ */
 var props = (function() {
     function property(attr) {
         return function(model, value) {
@@ -10,11 +14,18 @@ var props = (function() {
         };
     }
 
-    return s.getPropertiesAsArray().map(function(el) {
-        return {
-            key: el.value,
-            data: property(el.value)
+    function validator() {
+        return function (value, callback) {
+            callback($("#hotEditorForm").valid());
         };
+    }
+
+    return s.getPropertiesAsArray().map(function(el) {
+        return _.merge(el, {
+            key: el.value,
+            data: property(el.value),
+            validator: validator()
+        });
     });
 })();
 

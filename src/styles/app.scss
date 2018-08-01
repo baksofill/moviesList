@@ -19,3 +19,22 @@
   min-width: 120px;
   text-align: left;
 }
+
+.tooltip-inner {
+  background-color: #b00;
+}
+
+.tooltip.top .tooltip-arrow {
+  border-top-color: #900;
+}
+
+.handsontable .input-group-addon {
+  display: none;
+}
+
+.handsontable .form-control {
+  height: inherit;
+  padding: 0;
+  margin: 0 1px;
+  border-radius: 0px;
+}

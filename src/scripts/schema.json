@@ -10,49 +10,53 @@
       "type": "string",
       "value": "author",
       "validation": {
-        "required": "true",
         "minlength": "3",
-        "maxlength": "30"
+        "maxlength": "30",
+        "required": true
+      }
       }
     },
     "2": {
       "type": "string",
       "value": "movieName",
       "validation": {
-        "required": "true",
-        "minlength": "3",
-        "maxlength": "30"
+        "required": true,
+        "minlength": "4",
+        "maxlength": "34"
       }
     },
     "3": {
       "type": "select",
       "value": "typeOfFilm",
-      "options": ["Movie", "TV series"]
+      "options": [
+        "Movie",
+        "TV series"
+      ]
     },
     "4": {
       "type": "number",
       "value": "releaseDate",
       "validation": {
-        "number": "true",
-        "maxlength": "30"
+        "required": true,
+        "releaseDate": true
       }
     },
     "5": {
       "type": "obj",
       "value": "duration",
+      "renderer": "durationRenderer",
       "properties": {
         "0": {
           "type": "number",
-          "value": "durationValue",
+          "value": "value",
           "validation": {
-            "required": "true",
-            "minlength": "3",
-            "maxlength": "30"
+            "required": true,
+            "number": true
           }
         },
         "1": {
           "type": "select",
-          "value": "durationUnit",
+          "value": "type",
           "options": [
             "min",
             "hr"

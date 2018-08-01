@@ -1,14 +1,14 @@
 var Handsontable = require("handsontable");
-var SelectView = require("../../formElements/select/select");
+var ObjView = require("../../formElements/obj/obj");
 var props = require("../props.js");
 
 /**
  * @private
- * @editor SelEditor
- * @class SelEditor
+ * @editor ObjEditor
+ * @class ObjEditor
  */
-var SelEditor = Handsontable.editors.BaseEditor.prototype.extend();
-SelEditor.prototype.init = function () {
+var ObjEditor = Handsontable.editors.BaseEditor.prototype.extend();
+ObjEditor.prototype.init = function () {
     this.div = document.createElement("div");
     this.div.style.display = "none";
     this.form = document.createElement("form");
@@ -16,26 +16,34 @@ SelEditor.prototype.init = function () {
 
     this.instance.rootElement.appendChild(this.div);
 };
-SelEditor.prototype.prepare = function () {
+ObjEditor.prototype.prepare = function () {
     // Remember to invoke parent's method
     Handsontable.editors.BaseEditor.prototype.prepare.apply(this, arguments);
 
-    this.iv = new SelectView({
+    this.iv = new ObjView({
         options: {
             key: props[this.col].key,
+            properties: props[this.col].properties,
             value: this.originalValue,
-            options: props[this.col].options,
             validation: props[this.col].validation
         }
     });
 };
-SelEditor.prototype.setValue = function (value) {
+ObjEditor.prototype.saveValue = function (value, ctrlDown) {
+    // if ctrl+enter and multiple cells selected, behave like Excel (finish editing and apply to all cells)
+    if (ctrlDown) {
+        // have to do
+    } else {
+        this.instance.setDataAtCell(this.row, this.col, value[0][0], "edit");
+    }
+};
+ObjEditor.prototype.setValue = function (value) {
     this.iv.set({ value });
 };
-SelEditor.prototype.getValue = function () {
+ObjEditor.prototype.getValue = function () {
     return this.iv.getValue();
 };
-SelEditor.prototype.open = function () {
+ObjEditor.prototype.open = function () {
     var width = Handsontable.dom.outerWidth(this.TD);
     var height = Handsontable.dom.outerHeight(this.TD);
     var rootOffset = Handsontable.dom.offset(this.instance.rootElement);
@@ -51,16 +59,17 @@ SelEditor.prototype.open = function () {
     // display the view
     this.div.style.display = "";
 
-    this.iv.render();
     // Attach node to DOM, by appending it to the container holding the table
+    this.iv.render();
     this.form.appendChild(this.iv.el);
     this.div.appendChild(this.form);
+    this.iv.onShow();
     $("#hotEditorForm").validate(this.iv.getValidationOptions());
 };
-SelEditor.prototype.focus = function () {
+ObjEditor.prototype.focus = function () {
     console.log("focus");
 };
-SelEditor.prototype.close = function () {
+ObjEditor.prototype.close = function () {
     var validator = $("#hotEditorForm").validate();
     validator.destroy();
     this.div.style.display = "none";
@@ -68,4 +77,4 @@ SelEditor.prototype.close = function () {
     Handsontable.dom.empty(this.div);
 };
 
-module.exports = SelEditor;
+module.exports = ObjEditor;

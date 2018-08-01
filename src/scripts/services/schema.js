@@ -1,7 +1,16 @@
 var data = require("../schema.json");
 
+/**
+ *  @class application schema service
+ */
 var Schema = {
 
+    /**
+     * Returns name of handsontable editor for specified element
+     * @method getEditor
+     * @param {number} index
+     * @returns {string}
+     */
     getEditor: function(index) {
 
         switch (data.properties[index].type) {
@@ -13,31 +22,38 @@ var Schema = {
             return "inputEditor";
         case "select":
             return "selEditor";
-        case "multiple":
-            return "inputEditor";
+        case "obj":
+            return "objEditor";
         default:
             return "inputEditor";
         }
     },
 
+    /**
+     * Returns porperties of schema as Object
+     * @method getProperties
+     * @returns {Object}
+     */
     getProperties: function() {
-        var props = {};
+        var p = {};
         for (var key in data.properties) {
-            props[key] = {
-                type: data.properties[key].type,
-                value: data.properties[key].value,
-                title: data.properties[key].value,
-                editor: this.getEditor(key),
-            };
+            p[key] = _.clone(data.properties[key]);
+            p[key].title = data.properties[key].value;
+            p[key].editor = this.getEditor(key);
         }
-        return props;
+        return p;
     },
 
+    /**
+     * Returns porperties of schema as Array
+     * @method getPropertiesAsArray
+     * @returns {Array}
+     */
     getPropertiesAsArray: function() {
         return _.values(this.getProperties());
     },
 
-    updateSeasons: function(value, onDependsValue) {
+	updateSeasons: function(value, onDependsValue) {
         debugger;
         if (onDependsValue === "Movie") {
             return "";
@@ -46,6 +62,20 @@ var Schema = {
         }
         return null;
     },
+
+    /**
+     * Adds validators to jquery-validator
+     */
+    setupValidators: function() {
+        $.validator.addMethod("releaseDate", function(value) {
+            if (!value || value.length != 4 || 1895 > value || value > (new Date()).getFullYear()) {
+                return false;
+            }
+            return true;
+
+        }, "Please specify the correct date of release");
+          
+    }
 };
 
 module.exports = Schema;

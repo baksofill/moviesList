@@ -6,10 +6,12 @@ var modals = require("../services/modal");
 var FormView = require("../form/form");
 var ModalFormWrapper = require("../services/modal/formWrapper");
 
-var schema = require("../services/schema");
 var props = require("./props.js");
 var InputEditor = require("./editors/input.js");
 var SelEditor = require("./editors/select.js");
+var ObjEditor = require("./editors/obj.js");
+
+var DurationRenderer = require("./renderers/duration.js");
 
 var hotView = Marionette.ItemView.extend({
     tagName: "div",
@@ -43,15 +45,25 @@ var hotView = Marionette.ItemView.extend({
         (function(Handsontable){
             Handsontable.editors.registerEditor("inputEditor", InputEditor);
             Handsontable.editors.registerEditor("selEditor", SelEditor);
+            Handsontable.editors.registerEditor("objEditor", ObjEditor);
+            Handsontable.renderers.registerRenderer("durationRenderer", DurationRenderer);
         })(Handsontable);
 
-        var schemaProps = schema.getPropertiesAsArray();
         var hot = new Handsontable(container, {
             data: movieCollection,
             dataSchema: makeMovie,
             contextMenu: false,
-            colHeaders: schemaProps.map(function(el) {return el.title;}),
-            columns: schemaProps.map(function(el, index) {return {data: props[index].data, editor: el.editor};}),
+            colHeaders: props.map(function(el) {
+                return el.title;
+            }),
+            columns: props.map(function(el) {
+                return {
+                    data: el.data,
+                    editor: el.editor,
+                    validator: el.validator,
+                    allowInvalid: false,
+                    renderer: el.renderer};
+            }),
             rowHeaders: true,
         });
 
