@@ -31,7 +31,7 @@ var FormElement = Marionette.LayoutView.extend({
 
     addEvents: function (depObj) {
         depObj.watchedEl = this.model.attributes.key;
-        $("#id-" + [depObj.target]).on(depObj.event, depObj, function (e) {
+        $("#id-" + depObj.target).on(depObj.event, depObj, function (e) {
             $("#id-" + e.data.watchedEl)[0].value = schemaService[e.data.action]($("#id-" + e.data.watchedEl)[0].value,  e.currentTarget.value);
         });
     },
