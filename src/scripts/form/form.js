@@ -6,7 +6,6 @@ var SelectView = require("../formElements/select/select");
 var ObjView = require("../formElements/obj/obj");
 
 var schema = require("../schema.json");
-var schemaService = require("../services/schema");
 
 var FormView = Marionette.LayoutView.extend({
     tagName: "div",
@@ -29,7 +28,7 @@ var FormView = Marionette.LayoutView.extend({
                     key: schema.properties[key].value,
                     type: schema.properties[key].type,
                     validation: schema.properties[key].validation,
-					dep:  schema.properties[key].dep
+                    dep:  schema.properties[key].dep,
                     view: elementView
                 });
             }
@@ -73,7 +72,7 @@ var FormView = Marionette.LayoutView.extend({
             key: properties.value,
             value: vals[properties.value],
             validation: properties.validation,
-			dep: properties.dep
+            dep: properties.dep
         };
 
         switch (properties.type) {

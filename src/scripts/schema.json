@@ -14,7 +14,6 @@
         "maxlength": "30",
         "required": true
       }
-      }
     },
     "2": {
       "type": "string",
@@ -75,7 +74,5 @@
         }
       }
     }
-
-
   }
 }

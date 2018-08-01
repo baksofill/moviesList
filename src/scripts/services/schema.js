@@ -53,8 +53,10 @@ var Schema = {
         return _.values(this.getProperties());
     },
 
-	updateSeasons: function(value, onDependsValue) {
-        debugger;
+    /**
+     * Adds dependency method
+     */
+    updateSeasons: function(value, onDependsValue) {
         if (onDependsValue === "Movie") {
             return "";
         } else if (onDependsValue === "TV series") {
