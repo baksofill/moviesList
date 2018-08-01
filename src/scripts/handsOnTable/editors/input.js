@@ -9,9 +9,9 @@ var props = require("../props.js");
  */
 var InputEditor = Handsontable.editors.BaseEditor.prototype.extend();
 InputEditor.prototype.init = function () {
-    this.div = document.createElement("DIV");
+    this.div = document.createElement("div");
     this.div.style.display = "none";
-    this.form = document.createElement("FORM");
+    this.form = document.createElement("form");
     this.form.setAttribute("id", "hotEditorForm");
 
     this.instance.rootElement.appendChild(this.div);
@@ -45,7 +45,6 @@ InputEditor.prototype.open = function () {
     this.div.style.left = tdOffset.left - rootOffset.left + "px";
     this.div.style.zIndex = 9999;
     this.div.style.height = height + "px";
-    //this.div.style.minWidth = width + "px";
     this.div.style.width = width + "px";
 
     // display the view

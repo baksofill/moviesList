@@ -9,9 +9,9 @@ var props = require("../props.js");
  */
 var ObjEditor = Handsontable.editors.BaseEditor.prototype.extend();
 ObjEditor.prototype.init = function () {
-    this.div = document.createElement("DIV");
+    this.div = document.createElement("div");
     this.div.style.display = "none";
-    this.form = document.createElement("FORM");
+    this.form = document.createElement("form");
     this.form.setAttribute("id", "hotEditorForm");
 
     this.instance.rootElement.appendChild(this.div);

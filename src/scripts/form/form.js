@@ -93,14 +93,11 @@ var FormView = Marionette.LayoutView.extend({
     },
     
     onSubmit: function () {
-        console.log("check", this.$("#movieForm").valid());
         if (!this.$("#movieForm").valid()) {
-            console.log("not valid");
             return;
         }
         var data = {};
         this.els.forEach(function(el) {
-                
             data[el.key] = el.view.getValue();
         });
         this.model.set(data, {validate: true});
@@ -111,8 +108,6 @@ var FormView = Marionette.LayoutView.extend({
                 this.toObject(),
                 this.model.cid
             );
-        } else {
-            console.log("invalid form data");
         }
     },
 
