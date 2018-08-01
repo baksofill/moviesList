@@ -87,14 +87,19 @@ var appModalService = ModalService.extend({
      * @param {Backbone.View} view
      */
     render: function(view) {
-        this.contentRegion.show(view);
+        view.render();
+        Marionette.triggerMethodOn(view, "before:show", view, this.contentRegion);
+        view._parent = this.contentRegion;
+        view._parent.el.appendChild(view.el);
+        Marionette.triggerMethodOn(view, "show", view, this.contentRegion);
     },
 
     /**
      * @method remove
+     * @param {Backbone.View} view
      */
-    remove: function() {
-        this.contentRegion.empty();
+    remove: function(view) {
+        view._parent.el.removeChild(view.el);
     },
 
     /**
