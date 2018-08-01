@@ -31,6 +31,7 @@ var ObjView = Marionette.LayoutView.extend({
                 this.els.push({
                     key: properties[key].value,
                     type: properties[key].type,
+                    validation: properties[key].validation,
                     view: elementView
                 });
             }
@@ -40,6 +41,16 @@ var ObjView = Marionette.LayoutView.extend({
         }.bind(this));
     },
 
+    getValidationOptions: function() {
+        var vOptions = {
+            rules: {}
+        };
+        this.els.forEach(function(el) {
+            _.merge(vOptions, el.view.getValidationOptions());
+        });
+        return vOptions;
+    },
+    
     onShow: function() {
         this.els.forEach(function(el) {
             this.regionManager.get(this.getRegionName(el.key)).show(el.view);
@@ -58,7 +69,8 @@ var ObjView = Marionette.LayoutView.extend({
     selectingView: function (properties, vals) {
         var options = {
             key: properties.value,
-            value: vals[properties.value]
+            value: vals[properties.value],
+            validation: properties.validation
         };
 
         switch (properties.type) {

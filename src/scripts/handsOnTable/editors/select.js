@@ -1,18 +1,18 @@
 var Handsontable = require("handsontable");
 var SelectView = require("../../formElements/select/select");
 var props = require("../props.js");
-var schema = require("../../services/schema");
 
+/**
+ * @private
+ * @editor SelEditor
+ * @class SelEditor
+ */
 var SelEditor = Handsontable.editors.BaseEditor.prototype.extend();
 SelEditor.prototype.init = function () {
-    this.div = document.createElement("DIV");
+    this.div = document.createElement("div");
     this.div.style.display = "none";
-
-    this.schemaProps = schema.getPropertiesAsArray();
-    this.iv = new SelectView({ options: { key: null, value: null } });
-
-    // Attach node to DOM, by appending it to the container holding the table
-    this.div.appendChild(this.iv.el);
+    this.form = document.createElement("form");
+    this.form.setAttribute("id", "hotEditorForm");
 
     this.instance.rootElement.appendChild(this.div);
 };
@@ -20,7 +20,14 @@ SelEditor.prototype.prepare = function () {
     // Remember to invoke parent's method
     Handsontable.editors.BaseEditor.prototype.prepare.apply(this, arguments);
 
-    this.iv.set({ key: props[this.col].key, options: this.schemaProps[this.col].options, value: this.originalValue });
+    this.iv = new SelectView({
+        options: {
+            key: props[this.col].key,
+            value: this.originalValue,
+            options: props[this.col].options,
+            validation: props[this.col].validation
+        }
+    });
 };
 SelEditor.prototype.setValue = function (value) {
     this.iv.set({ value });
@@ -39,16 +46,26 @@ SelEditor.prototype.open = function () {
     this.div.style.left = tdOffset.left - rootOffset.left + "px";
     this.div.style.zIndex = 9999;
     this.div.style.height = height + "px";
-    this.div.style.minWidth = width + "px";
+    this.div.style.width = width + "px";
 
     // display the view
     this.div.style.display = "";
+
+    this.iv.render();
+    // Attach node to DOM, by appending it to the container holding the table
+    this.form.appendChild(this.iv.el);
+    this.div.appendChild(this.form);
+    $("#hotEditorForm").validate(this.iv.getValidationOptions());
 };
 SelEditor.prototype.focus = function () {
     console.log("focus");
 };
 SelEditor.prototype.close = function () {
+    var validator = $("#hotEditorForm").validate();
+    validator.destroy();
     this.div.style.display = "none";
+    Handsontable.dom.empty(this.form);
+    Handsontable.dom.empty(this.div);
 };
 
 module.exports = SelEditor;

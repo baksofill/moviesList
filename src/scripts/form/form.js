@@ -8,7 +8,7 @@ var ObjView = require("../formElements/obj/obj");
 var schema = require("../schema.json");
 
 var FormView = Marionette.LayoutView.extend({
-    tagName: "form",
+    tagName: "div",
     className: "mainForm",
     template: require("./movieForm.html"),
 
@@ -27,6 +27,7 @@ var FormView = Marionette.LayoutView.extend({
                 this.els.push({
                     key: schema.properties[key].value,
                     type: schema.properties[key].type,
+                    validation: schema.properties[key].validation,
                     view: elementView
                 });
             }
@@ -45,9 +46,15 @@ var FormView = Marionette.LayoutView.extend({
     },
 
     onShow: function() {
+        var vOptions = {
+            debug: true, 
+            rules: {},
+        };
         this.els.forEach(function(el) {
             this.regionManager.get(this.getRegionName(el.key)).show(el.view);
+            _.merge(vOptions, el.view.getValidationOptions());
         }.bind(this));
+        this.$("#movieForm").validate(vOptions);
     },
 
     appendRegion: function(key){
@@ -62,7 +69,8 @@ var FormView = Marionette.LayoutView.extend({
     selectingView: function (properties, vals) {
         var options = {
             key: properties.value,
-            value: vals[properties.value]
+            value: vals[properties.value],
+            validation: properties.validation
         };
 
         switch (properties.type) {
@@ -85,6 +93,9 @@ var FormView = Marionette.LayoutView.extend({
     },
     
     onSubmit: function () {
+        if (!this.$("#movieForm").valid()) {
+            return;
+        }
         var data = {};
         this.els.forEach(function(el) {
             data[el.key] = el.view.getValue();
@@ -97,8 +108,6 @@ var FormView = Marionette.LayoutView.extend({
                 this.toObject(),
                 this.model.cid
             );
-        } else {
-            console.log("invalid form data");
         }
     },
 

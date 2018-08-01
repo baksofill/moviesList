@@ -62,6 +62,8 @@ module.exports = [{
         ]),
         new CopyWebpackPlugin([
             { from: "node_modules/jquery/dist/jquery.min.js", to: "vendor" },
+            { from: "node_modules/jquery-validation/dist/jquery.validate.min.js", to: "vendor" },
+            { from: "node_modules/jquery-validation-bootstrap-tooltip/jquery-validate.bootstrap-tooltip.min.js", to: "vendor" },
             { from: "node_modules/lodash/lodash.min.js", to: "vendor" },
             { from: "node_modules/backbone/backbone-min.js", to: "vendor" },
             { from: "node_modules/bootstrap/dist/js/bootstrap.min.js", to: "vendor" }
