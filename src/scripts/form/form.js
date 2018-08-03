@@ -25,9 +25,6 @@ var FormView = Marionette.LayoutView.extend({
         try {
             for (var key in schema.properties) {
                 var elementView = this.selectingView(schema.properties[key], this.model.attributes);
-                elementView.on("click",  function (e) {
-                    console.log(e.data);
-                });
                 var tempProp = schema.properties[key];
                 if(elementView){
                     this.els.push({
