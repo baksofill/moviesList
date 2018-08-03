@@ -6,6 +6,7 @@ var SelectView = require("../formElements/select/select");
 var ObjView = require("../formElements/obj/obj");
 
 var schema = require("../schema.json");
+var schemaService = require("../services/schema");
 
 var FormView = Marionette.LayoutView.extend({
     tagName: "div",
@@ -35,6 +36,18 @@ var FormView = Marionette.LayoutView.extend({
         }
         this.els.forEach(function(el) {
             this.appendRegion(el.key);
+            if (el.dep) {
+                schemaService.addDepHandler(this.els, el.key, el.dep);
+            }
+        }.bind(this));
+        this.els.forEach(function(el) {
+            if (el.depData) {
+                el.depData.forEach(function(data) {
+                    var o = {};
+                    o[data.event + " " + data.elId] = data.handler;
+                    this.delegateEvents(_.extend(this.events, o));        
+                }.bind(this));
+            }
         }.bind(this));
     },
 

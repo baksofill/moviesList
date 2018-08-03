@@ -53,6 +53,74 @@ var Schema = {
         return _.values(this.getProperties());
     },
 
+    getMasterElements: function(index) {
+        var els = [];
+        
+        for (var key in data.properties[index].dep) {
+            for (var key2 in data.properties) {
+                if (data.properties[key2].value === data.properties[index].dep[key].target) {
+                    els[index] = {
+                        key: data.properties[index].value,
+                        target: data.properties[index].dep[key].target,
+                        action: data.properties[index].dep[key].action,
+                    };
+                }
+            }
+        }
+        return els;
+    },
+
+    getSlaveElements: function(index) {
+        var els = [];
+        for (var key in data.properties) {
+            for (var key2 in data.properties[key].dep) {
+                if (data.properties[index].value === data.properties[key].dep[key2].target) {
+                    els[key] = {
+                        key: data.properties[key].value,
+                        target: data.properties[key].dep[key2].target,
+                        action: data.properties[key].dep[key2].action,
+                    };
+                }
+            }
+        }
+        return els;
+    },
+
+    _getDepHandler: function(wEl, cEl, action) {
+        var _this = this;
+        return function() {
+            wEl.set({
+                value: _this[action](wEl.getValue(), cEl.getValue())
+            });
+        };
+    },
+
+    addDepHandler: function(els, key, dep) {
+        for (var index in dep) {
+            var masterView, slaveView;
+            for (var i=0; i<els.length; i++) {
+                if (els[i].key === key) {
+                    slaveView = els[i].view;
+                }
+                if (els[i].key === dep[index].target) {
+                    masterView = els[i].view;
+                }
+            }
+
+            els.forEach(function(el) {
+                if (el.key === dep[index].target || el.key === key) {
+                    if (! el.depData) {
+                        el.depData = [];
+                    }
+                    var data = _.clone(dep[index]);
+                    data.handler = this._getDepHandler(slaveView, masterView, data.action);
+                    data.elId = el.view.getId();
+                    el.depData.push(data);
+                }
+            }.bind(this));
+        }
+    },
+
     /**
      * Adds dependency method
      */

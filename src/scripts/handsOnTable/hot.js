@@ -6,6 +6,7 @@ var modals = require("../services/modal");
 var FormView = require("../form/form");
 var ModalFormWrapper = require("../services/modal/formWrapper");
 
+var schemaService = require("../services/schema");
 var props = require("./props.js");
 var InputEditor = require("./editors/input.js");
 var SelEditor = require("./editors/select.js");
@@ -69,6 +70,35 @@ var hotView = Marionette.ItemView.extend({
 
         Handsontable.hooks.add("modifyRowData", function(row) {
             return movieCollection.at(row);
+        }, hot);
+
+        Handsontable.hooks.add("afterChange", function(changes, source) {
+            if (source === "p") {
+                return;
+            }
+            props.forEach(function(prop, index) {
+                if (changes[0][1] === prop.data) {
+                    var masterElements = schemaService.getMasterElements(index);
+                    var slaveElements = schemaService.getSlaveElements(index);
+                    var colsToUpdate = [];
+                    if (masterElements.length > 0) {
+                        colsToUpdate = masterElements;
+                    } else {
+                        if (slaveElements.length > 0) {
+                            colsToUpdate = slaveElements;
+                        }
+                    }
+                    colsToUpdate.forEach(function(el, index) {
+                        if (changes[0][2] !== changes[0][3]) {
+                            var row = movieCollection.at(changes[0][0]);
+                            var newValue = schemaService[el.action](row.get(el.key), row.get(el.target));
+                            if (newValue !== null) {
+                                this.setDataAtCell(changes[0][0], index, newValue, "p");
+                            }
+                        }
+                    }.bind(this));
+                }
+            }.bind(this));
         }, hot);
 
         function makeMovie() {

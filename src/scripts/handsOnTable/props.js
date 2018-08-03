@@ -24,7 +24,7 @@ var props = (function() {
         return _.merge(el, {
             key: el.value,
             data: property(el.value),
-            validator: validator()
+            validator: (el.validation) ? validator() : undefined
         });
     });
 })();
