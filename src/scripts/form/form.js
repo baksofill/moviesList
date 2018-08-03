@@ -65,9 +65,12 @@ var FormView = Marionette.LayoutView.extend({
             this.regionManager.get(this.getRegionName(el.key)).show(el.view);
 
             if (el.dep) {
-                this["form-el-" + el.dep[0].target].$el.on(el.dep[0].event, el.dep[0], function (e) {
-                    $("#id-" + e.data.watchedEl)[0].value = schemaService[e.data.action]($("#id-" + e.data.watchedEl)[0].value,  $("#id-" + e.data.target)[0].value);
-                });
+                for (var key in el.dep) {
+                    el.dep[key].watchedEl = el.key;
+                    this["form-el-" + el.dep[key].target].$el.on(el.dep[0].event, el.dep[key], function (e) {
+                        $("#id-" + e.data.watchedEl)[0].value = schemaService[e.data.action]($("#id-" + e.data.watchedEl)[0].value,  $("#id-" + e.data.target)[0].value);
+                    });
+                }
             }
             _.merge(vOptions, el.view.getValidationOptions());
         }.bind(this));
