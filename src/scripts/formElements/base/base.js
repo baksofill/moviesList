@@ -1,8 +1,6 @@
 var Marionette = require("backbone.marionette");
 var Backbone = require("backbone");
 
-var schemaService = require("../../services/schema");
-
 var FormElement = Marionette.LayoutView.extend({
     tagName: "div",
     className: "elementForm",
@@ -17,7 +15,7 @@ var FormElement = Marionette.LayoutView.extend({
     },
 
     ititData: function (data) {
-        return _.defaults(data, {key: "", value: "", dep: {}});
+        return _.defaults(data, {key: "", value: ""});
     },
 
     render: function () {
