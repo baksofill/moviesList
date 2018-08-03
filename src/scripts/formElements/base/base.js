@@ -21,19 +21,7 @@ var FormElement = Marionette.LayoutView.extend({
     },
 
     render: function () {
-        if (Object.keys(this.model.attributes.dep).length > 0) {
-            for (var key in this.model.attributes.dep) {
-                this.addEvents(this.model.attributes.dep[key]);
-            }
-        }
         return this.$el.html(this.template(this.model.toJSON()));
-    },
-
-    addEvents: function (depObj) {
-        depObj.watchedEl = this.model.attributes.key;
-        $("#id-" + depObj.target).on(depObj.event, depObj, function (e) {
-            $("#id-" + e.data.watchedEl)[0].value = schemaService[e.data.action]($("#id-" + e.data.watchedEl)[0].value,  e.currentTarget.value);
-        });
     },
 
     getValidationOptions: function() {

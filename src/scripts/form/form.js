@@ -6,6 +6,7 @@ var SelectView = require("../formElements/select/select");
 var ObjView = require("../formElements/obj/obj");
 
 var schema = require("../schema.json");
+var schemaService = require("./../services/schema");
 
 var FormView = Marionette.LayoutView.extend({
     tagName: "div",
@@ -21,21 +22,30 @@ var FormView = Marionette.LayoutView.extend({
 
     initialize: function(){
         this.els = [];
-        for (var key in schema.properties) {
-            var elementView = this.selectingView(schema.properties[key], this.model.attributes);
-            if(elementView){
-                this.els.push({
-                    key: schema.properties[key].value,
-                    type: schema.properties[key].type,
-                    validation: schema.properties[key].validation,
-                    dep:  schema.properties[key].dep,
-                    view: elementView
+        try {
+            for (var key in schema.properties) {
+                var elementView = this.selectingView(schema.properties[key], this.model.attributes);
+                elementView.on("click",  function (e) {
+                    console.log(e.data);
                 });
+                var tempProp = schema.properties[key];
+                if(elementView){
+                    this.els.push({
+                        key: tempProp.value,
+                        type: tempProp.type,
+                        validation: tempProp.validation,
+                        dep:  tempProp.dep,
+                        view: elementView
+                    });
+                }
             }
+
+            this.els.forEach(function(el) {
+                this.appendRegion(el.key);
+            }.bind(this));
+        } catch (err) {
+            console.log(err);
         }
-        this.els.forEach(function(el) {
-            this.appendRegion(el.key);
-        }.bind(this));
     },
 
     events: {
@@ -53,6 +63,12 @@ var FormView = Marionette.LayoutView.extend({
         };
         this.els.forEach(function(el) {
             this.regionManager.get(this.getRegionName(el.key)).show(el.view);
+
+            if (el.dep) {
+                this["form-el-" + el.dep[0].target].$el.on(el.dep[0].event, el.dep[0], function (e) {
+                    $("#id-" + e.data.watchedEl)[0].value = schemaService[e.data.action]($("#id-" + e.data.watchedEl)[0].value,  $("#id-" + e.data.target)[0].value);
+                });
+            }
             _.merge(vOptions, el.view.getValidationOptions());
         }.bind(this));
         this.$("#movieForm").validate(vOptions);
