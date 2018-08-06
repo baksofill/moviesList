@@ -20,6 +20,10 @@
   text-align: left;
 }
 
+.elementForm {
+  margin-bottom: 1em;
+}
+
 .tooltip-inner {
   background-color: #b00;
 }
@@ -30,6 +34,10 @@
 
 .handsontable .input-group-addon {
   display: none;
+}
+
+.handsontable .elementForm {
+  margin-bottom: 0.25em;
 }
 
 .handsontable .form-control {
