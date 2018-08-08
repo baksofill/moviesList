@@ -1,10 +1,65 @@
 var data = require("../schema.json");
+var dataCountries = require("../schema.countries.json");
 
 /**
  *  @class application schema service
  */
 var Schema = {
 
+    /**
+     * Returns default values for schema
+     * @method getDefaults
+     * @return {Object}
+     */
+    getDefaults: function() {
+        var defaults = {};
+        for (var key in data.properties) {
+            var value = data.properties[key].value;
+            defaults[value]= data.properties[key].default || "";
+        }
+        return defaults;
+    },
+
+    /**
+     * Converts data object to array according to schema
+     * @method getDataAsArray
+     * @param {Object} values
+     * @returns {Array}
+     */
+    getDataAsArray: function(values) {
+        var result = [];
+        for (var key in data.properties) {
+            result[Number(key)] = values[data.properties[key].value];
+        }
+
+        return result;
+    },
+
+    /**
+     * Returns index of element in schema by name
+     * @method getIndexByValue
+     * @param {string} value
+     * @return {number}
+     */
+    getIndexByValue: function(value) {
+        for (var key in data.properties) {
+            if (data.properties[key].value === value) {
+                return Number(key);
+            }
+        }
+        return null;
+    },
+
+    /**
+     * Returns name of element in schema by index
+     * @method getValueByIndex
+     * @param {number} index
+     * @return {string}
+     */
+    getValueByIndex: function(index) {
+        return data.properties[index].value;
+    },
+    
     /**
      * Returns name of handsontable editor for specified element
      * @method getEditor
@@ -54,6 +109,57 @@ var Schema = {
     },
 
     /**
+     * Returns array of data for each column of table according to schema and in depending from defining values
+     * @method getProps
+     * @param {Array} definingValues
+     * @returns {Array}
+     */
+    getProps: function(definingValues) {
+
+        function property(attr) {
+            return function(model, value) {
+                if (_.isUndefined(value)) {
+                    return model.get(attr);
+                }
+                model.set(attr, value);
+            };
+        }
+    
+        function validator() {
+            return function (value, callback) {
+                callback($("#hotEditorForm").valid());
+            };
+        }
+    
+        var props = this.getPropertiesAsArray().map(function(el) {
+            return _.merge(el, {
+                key: el.value,
+                type: el.type,
+                data: property(el.value),
+                validator: (el.validation) ? validator() : undefined
+            });
+        });
+
+        if (Array.isArray(definingValues)) {
+            props.forEach(function(el, index) {
+                var elsToUpdate = this.getSlaveElements(index);
+                elsToUpdate.forEach(function(slavEl) {
+                    if (slavEl.type === "select") {
+                        var elValue = definingValues[this.getIndexByValue(el.key)];
+                        var targetValue = definingValues[this.getIndexByValue(slavEl.target)];
+                        var dependencyResult = this[slavEl.action](elValue, targetValue);
+                        if (Array.isArray(dependencyResult)) {
+                            props[this.getIndexByValue(slavEl.key)].options = dependencyResult;
+                        }
+                    }
+                }.bind(this));
+            }.bind(this));
+        }
+
+        return props;
+    },
+
+    /**
      * Returns an array of elements on which the element with the index depends
      * @method getMasterElements
      * @param {Number} index
@@ -67,6 +173,7 @@ var Schema = {
                 if (data.properties[key2].value === data.properties[index].dep[key].target) {
                     els[index] = {
                         key: data.properties[index].value,
+                        type: data.properties[index].type,
                         target: data.properties[index].dep[key].target,
                         action: data.properties[index].dep[key].action,
                     };
@@ -89,6 +196,7 @@ var Schema = {
                 if (data.properties[index].value === data.properties[key].dep[key2].target) {
                     els[key] = {
                         key: data.properties[key].value,
+                        type: data.properties[key].type,
                         target: data.properties[key].dep[key2].target,
                         action: data.properties[key].dep[key2].action,
                     };
@@ -98,9 +206,22 @@ var Schema = {
         return els;
     },
 
+    /**
+     * Sets options in schema
+     * @method set
+     * @param {string} value
+     * @param {Object} options
+     */
+    set: function(value, options) {
+        for (var key in data.properties) {
+            if (data.properties[key].value === value) {
+                _.merge(data.properties[key], options);
+            }
+        }
+    },
 
     /**
-     * Adds dependency method
+     * Dependency method for Seasons
      */
     updateSeasons: function(value, onDependsValue) {
         if (onDependsValue === "Movie") {
@@ -109,6 +230,13 @@ var Schema = {
             return value || 1;
         }
         return null;
+    },
+
+    /**
+     * Dependency method for MovieMaker
+     */
+    updateMovieMaker: function(value, onDependsValue) {
+        return dataCountries[onDependsValue];
     },
 
     /**
@@ -122,7 +250,6 @@ var Schema = {
             return true;
 
         }, "Please specify the correct date of release");
-          
     }
 };
 

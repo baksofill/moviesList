@@ -1,0 +1,39 @@
+{
+    "USA": [
+        "DreamWorks Animation",
+        "20th Century Pictures",
+        "Metro-Goldwyn-Mayer",
+        "Paramount Pictures",
+        "Touchstone Pictures",
+        "Warner Bros."
+    ],
+    "France": [
+        "Gaumont Film Company",
+        "StudioCanal"
+    ],
+    "United Kingdom": [
+        "BBC Films",
+        "Magma Pictures",
+        "PolyGram Filmed Entertainment",
+        "Vertigo Films"
+    ],
+    "Germany": [
+        "Bavaria Film",
+        "DEFA",
+        "Neue deutsche Filmgesellschaft",
+        "Studio Babelsberg",
+        "Wild Bunch"
+    ],
+    "India": [
+        "Aamir Khan Productions",
+        "Annapurna Studios",
+        "Balaji Motion Pictures",
+        "Eros International",
+        "Madras Talkies",
+        "Padmalaya Studios",
+        "Pritish Nandy Communications",
+        "Rajshri Productions",
+        "Sahara One",
+        "Vijaya Productions"
+    ]
+}

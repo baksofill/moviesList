@@ -5,7 +5,6 @@ var InputView = require("../formElements/input/input");
 var SelectView = require("../formElements/select/select");
 var ObjView = require("../formElements/obj/obj");
 
-var schema = require("../schema.json");
 var schemaService = require("./../services/schema");
 
 var FormView = Marionette.LayoutView.extend({
@@ -22,20 +21,22 @@ var FormView = Marionette.LayoutView.extend({
 
     initialize: function(){
         this.els = [];
+
+        var props = schemaService.getProps(schemaService.getDataAsArray(this.model.attributes));
+  
         try {
-            for (var key in schema.properties) {
-                var elementView = this.selectingView(schema.properties[key], this.model.attributes);
-                var tempProp = schema.properties[key];
+            props.forEach(function(prop) {
+                var elementView = this.selectingView(prop, this.model.attributes);
                 if(elementView){
                     this.els.push({
-                        key: tempProp.value,
-                        type: tempProp.type,
-                        validation: tempProp.validation,
-                        dep:  tempProp.dep,
+                        key: prop.value,
+                        type: prop.type,
+                        validation: prop.validation,
+                        dep:  prop.dep,
                         view: elementView
                     });
                 }
-            }
+            }.bind(this));
 
             this.els.forEach(function(el) {
                 this.appendRegion(el.key);
@@ -63,9 +64,21 @@ var FormView = Marionette.LayoutView.extend({
 
             if (el.dep) {
                 for (var key in el.dep) {
-                    el.dep[key].watchedEl = el.key;
+                    el.dep[key].watchedEl = el.view;
                     this["form-el-" + el.dep[key].target].$el.on(el.dep[0].event, el.dep[key], function (e) {
-                        $("#id-" + e.data.watchedEl)[0].value = schemaService[e.data.action]($("#id-" + e.data.watchedEl)[0].value,  $("#id-" + e.data.target)[0].value);
+                        var value = schemaService[e.data.action](e.data.watchedEl.getValue(), $("#id-" + e.data.target)[0].value);
+                        if (e.data.watchedEl.type === "select") {
+                            e.data.watchedEl.set({
+                                options: value
+                            });
+                            schemaService.set(key, {
+                                options: value
+                            });
+                        } else {
+                            e.data.watchedEl.set({
+                                value: value
+                            });
+                        }
                     });
                 }
             }

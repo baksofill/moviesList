@@ -1,6 +1,6 @@
 var Handsontable = require("handsontable");
 var ObjView = require("../../formElements/obj/obj");
-var props = require("../props.js");
+var schemaService = require("../../services/schema");
 
 /**
  * @private
@@ -19,6 +19,8 @@ ObjEditor.prototype.init = function () {
 ObjEditor.prototype.prepare = function () {
     // Remember to invoke parent's method
     Handsontable.editors.BaseEditor.prototype.prepare.apply(this, arguments);
+
+    var props = schemaService.getProps(this.cellProperties.instance.getDataAtRow(this.row));
 
     this.iv = new ObjView({
         options: {

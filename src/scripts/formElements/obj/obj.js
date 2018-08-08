@@ -7,7 +7,7 @@ var SelectView = require("../select/select");
 var ObjView = Marionette.LayoutView.extend({
     tagName: "div",
     className: "elementForm",
-    
+    type: "obj",
     template: require("./obj.html"),
     templateHelpers: function() {
         return {

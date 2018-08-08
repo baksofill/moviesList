@@ -1,6 +1,7 @@
 var BaseElement = require("../base/base");
 
 var SelectElement = BaseElement.extend({
+    type: "select",
     template: require("./select.html"),
 
     ititData: function (data) {

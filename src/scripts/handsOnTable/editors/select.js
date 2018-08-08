@@ -1,6 +1,6 @@
 var Handsontable = require("handsontable");
 var SelectView = require("../../formElements/select/select");
-var props = require("../props.js");
+var schemaService = require("../../services/schema");
 
 /**
  * @private
@@ -19,6 +19,8 @@ SelEditor.prototype.init = function () {
 SelEditor.prototype.prepare = function () {
     // Remember to invoke parent's method
     Handsontable.editors.BaseEditor.prototype.prepare.apply(this, arguments);
+
+    var props = schemaService.getProps(this.cellProperties.instance.getDataAtRow(this.row));
 
     this.iv = new SelectView({
         options: {

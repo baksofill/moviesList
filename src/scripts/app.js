@@ -14,7 +14,10 @@ var initialData = [
             type: "min",
             value: "30"
         },
-        seasons: ""
+        seasons: "",
+        country: "USA",
+        movieMaker: "DreamWorks Animation"
+
     },
     {
         id: "2",
@@ -26,7 +29,9 @@ var initialData = [
             type: "hr",
             value: "0.5"
         },
-        seasons: "4"
+        seasons: "4",
+        country: "France",
+        movieMaker: "StudioCanal"
     }
 ];
 
