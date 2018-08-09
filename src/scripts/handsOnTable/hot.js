@@ -7,7 +7,6 @@ var FormView = require("../form/form");
 var ModalFormWrapper = require("../services/modal/formWrapper");
 
 var schemaService = require("../services/schema");
-var props = require("./props.js");
 var InputEditor = require("./editors/input.js");
 var SelEditor = require("./editors/select.js");
 var ObjEditor = require("./editors/obj.js");
@@ -42,6 +41,7 @@ var hotView = Marionette.ItemView.extend({
     hotInit: function() {
         var movieCollection = this.collection;
         var container = document.getElementById("hot");
+        var props = schemaService.getProps();
 
         (function(Handsontable){
             Handsontable.editors.registerEditor("inputEditor", InputEditor);
@@ -84,7 +84,11 @@ var hotView = Marionette.ItemView.extend({
                             var row = movieCollection.at(changes[0][0]);
                             var newValue = schemaService[el.action](row.get(el.key), row.get(el.target));
                             if (newValue !== null) {
-                                this.setDataAtCell(changes[0][0], index, newValue, "p");
+                                if (Array.isArray(newValue)) {
+                                    this.setDataAtCell(changes[0][0], index, newValue[0], "p");
+                                } else {
+                                    this.setDataAtCell(changes[0][0], index, newValue, "p");
+                                }
                             }
                         }
                     }.bind(this));
