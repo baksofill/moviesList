@@ -11,6 +11,7 @@ var props = require("./props.js");
 var InputEditor = require("./editors/input.js");
 var SelEditor = require("./editors/select.js");
 var ObjEditor = require("./editors/obj.js");
+var DropDownView = require("../formElements/dropDown/dropDown");
 
 var DurationRenderer = require("./renderers/duration.js");
 
@@ -54,9 +55,24 @@ var hotView = Marionette.ItemView.extend({
             data: movieCollection,
             dataSchema: makeMovie,
             contextMenu: false,
-            colHeaders: props.map(function(el) {
-                return el.title;
-            }),
+            columnSorting: true,
+            colHeaders: function (col) {
+                this.dropDown = new DropDownView({
+                    options: {
+                        key: props[col].key,
+                        value: "myValue",
+                        options: [
+                            {type: "text", value: "Sort Asc"},
+                            {type: "text", value: "Sort Desc"},
+                            {type: "text", value: "Sorting Disabled"},
+                            {type: "input", value: "Filter"}
+                        ],
+                        cellNumber: col
+                    }
+                });
+                return this.dropDown.el.outerHTML;
+            },
+
             columns: props.map(function(el) {
                 return {
                     data: el.data,
@@ -65,7 +81,7 @@ var hotView = Marionette.ItemView.extend({
                     allowInvalid: false,
                     renderer: el.renderer};
             }),
-            rowHeaders: true,
+            rowHeaders: true
         });
 
         Handsontable.hooks.add("modifyRowData", function(row) {
@@ -92,6 +108,22 @@ var hotView = Marionette.ItemView.extend({
             }.bind(this));
         }, hot);
 
+        Handsontable.dom.addEvent(container, "click", function (event) {
+            if (event.target.nodeName == "A" && event.target.className == "dropdown-item") {
+                var cellNumber = event.target.dataset.cellnumber;
+                switch (event.target.text) {
+                case "Sort Asc":
+                    hot.getPlugin("columnSorting").sort(cellNumber, "asc", false);
+                    break;
+                case "Sort Desc":
+                    hot.getPlugin("columnSorting").sort(cellNumber, "desc", false);
+                    break;
+                default:
+                    hot.getPlugin("columnSorting").sort(cellNumber, "none", false);
+                }
+            }
+        });
+
         function makeMovie() {
             return new MovieModel();
         }
@@ -99,7 +131,7 @@ var hotView = Marionette.ItemView.extend({
 
     onDomRefresh: function() {
         this.hotInit();
-    },
+    }
 });
 
 module.exports = hotView;

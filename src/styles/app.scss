@@ -46,3 +46,7 @@
   margin: 0 1px;
   border-radius: 0px;
 }
+
+.ht__highlight.ht__active_highlight, .ht_clone_top.handsontable, .wtHolder {
+  overflow: visible !important;
+}

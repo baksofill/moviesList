@@ -1,0 +1,20 @@
+<span class="dropdown">
+    <span><%= key %> </span>
+    <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
+
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <%
+            _.each (options, function(element, index, list){
+            if (element.type == "input"){
+        %>
+            <li><a class="dropdown-item" data-cellNumber="<%= cellNumber %>"> <input type="text" placeholder="<%= element.value %>"> <span class="glyphicon glyphicon-search" ></span></a></li>
+
+       <% }else { %>
+            <li><a class="dropdown-item" data-cellNumber="<%= cellNumber %>"><%= element.value %></a></li>
+        <%
+            }});
+        %>
+    </ul>
+</span>
+
+
